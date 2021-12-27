@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "jest",
     "lint": "eslint src/** test/** --fix",
     "secure-mode": "jest --watchAll"
@@ -20,6 +21,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.25.1",
     "jest": "23.6.0",
+    "nodemon": "^2.0.15",
     "supertest": "3.3.0"
   },
   "dependencies": {

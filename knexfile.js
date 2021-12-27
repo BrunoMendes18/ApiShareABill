@@ -5,7 +5,7 @@ module.exports={
             host:'localhost',
             user:'postgres',
             password:'brunojesus18hd',
-            database:'shareabill',
+            database:'apishareabill',
         },
         debug:true,
         migrations: {

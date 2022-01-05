@@ -12,5 +12,6 @@ module.exports = {
     },
     "rules": {
         'arrow-body-style':'off',
+        'linebreak-style': 'windows'
     }
 };

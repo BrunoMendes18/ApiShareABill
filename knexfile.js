@@ -4,7 +4,7 @@ module.exports={
         connection:{
             host:'localhost',
             user:'postgres',
-            password:'brunojesus18hd',
+            password:'1234',
             database:'apishareabill',
         },
         debug:true,

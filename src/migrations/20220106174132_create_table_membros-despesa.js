@@ -8,6 +8,7 @@ exports.up = (knex) => {
             .references('id')
             .inTable('despesa')
             .notNull();
+        t.decimal('deve', 15, 2).notNull();
     });
 };
 

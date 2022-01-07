@@ -2,7 +2,7 @@ const request=require('supertest');
 const app=require('../../src/app');
 const mail=`${Date.now()}@gmail.com`;
 
-test('Test #13 - Receber token ao autenticar',()=>{
+test('Test #4 - Receber token ao autenticar',()=>{
     return app.services.user.save(
         {name: 'Bruno Auth', email: mail,password: '12345'}
     ).then(()=>request(app).post('/auth/signin')
@@ -14,7 +14,7 @@ test('Test #13 - Receber token ao autenticar',()=>{
     });
 });
 
-test('Test #14 - Tentativa de autenticação errada', ()=>{
+test('Test #5 - Tentativa de autenticação errada', ()=>{
     const mail=`${Date.now()}@gmail.com`;
     return app.services.user.save(
         {name: 'Bruno Auth', email: mail, password: '12345'}
@@ -26,7 +26,7 @@ test('Test #14 - Tentativa de autenticação errada', ()=>{
         });
 });
 
-test('Test #15 - Tentativa de autenticação com utilizador errado', () => {
+test('Test #6 - Tentativa de autenticação com utilizador errado', () => {
     const mail=`${Date.now()}@gmail.com`;
     return request(app).post('/auth/signin')
         .send({ email: mail, password: '6789' })
@@ -36,14 +36,14 @@ test('Test #15 - Tentativa de autenticação com utilizador errado', () => {
         });
 });
 
-test('Test #16 - Aceder a rotas protegidas', () => {
+test('Test #7 - Aceder a rotas protegidas', () => {
     return request(app).get('/v1/users')
         .then((res)=> {
             expect(res.status).toBe(401);
         });
 });
 
-test('Test #17 - Criar utilizador', () => {
+test('Test #8 - Criar utilizador', () => {
     const mail = `${Date.now()}@gmail.com`;
     return request(app).post('/auth/signup')
         .send({ name: 'Bruno Signup', email: mail, password: '12345'})

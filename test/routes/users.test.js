@@ -13,6 +13,7 @@ beforeAll(async () => {
     const res = await app.services.user.save({ name: 'Bruno Mendes', email: mail, password: '12345'});
     user = { ...res[0] };
     user.token = jwt.encode(user, secret);
+    console.log(user.token);
 });
 
 test('Test #1 - Listar os utilizadores', () => {
@@ -47,7 +48,24 @@ test('Test #2.1 - Guardar a palavra-passe encriptada',async()=>{
     expect(userDB.password).not.toBe('12345');
 });
 
-test('Test #3 - Inserir utilizador sem nome', () => {
+describe('Test #3 - Registo inválido ...', () => {
+    const testTemplate = (newData, errorMessage) => {
+        return request(app).post(MAIN_ROUTE)
+        .set('authorization', `bearer ${user.token}`)
+        .send({ name: 'Vitor Silva', email: `${Date.now()}@gmail.com`, password:'12345', ...newData })
+        .then((res) => {
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe(errorMessage);
+        });
+    };
+
+    test('Test #3.1 - Inserir sem nome', () => testTemplate({ name:null }, 'O NOME é um atributo obrigatório!'));
+    test('Test #3.2 - Inserir utilizador sem email', () => testTemplate({ email: null }, 'O EMAIL é um atributo obrigatório!'));
+    test('Test #3.3 - Inserir email duplo', () => testTemplate({ email: mail }, 'EMAIL já registado!'));  
+    test('Test #3.4 - Inserir sem password', () => testTemplate({ password: null }, 'A PASSWORD é um atributo obrigatório!'));
+});
+
+/* test('Test #3 - Inserir utilizador sem nome', () => {
     return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`)
       .send({ email: mail, password: '12345'})
@@ -84,4 +102,4 @@ test('Test #6 - Inserir utilizadores', () => {
           expect(res.status).toBe(400);
           expect(res.body.error).toBe('Email duplicado na BD');
       });
-});
+}); */

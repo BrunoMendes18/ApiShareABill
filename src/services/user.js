@@ -15,18 +15,22 @@ module.exports = (app) => {
       return bcrypt.hashSync(passwd,salt);
     };
 
-    const save = async (user) => {
-      if (!user.name) throw new validationError ('Nome é um atributo obrigatório');
-      if (!user.email) throw new validationError ('O email é um atributo obrigatório');
-      if (!user.password) throw new validationError ('A palavra-passe é um atributo obrigatório');
+    const validate = async (user) => {
+      if (!user.name) throw new validationError ('O NOME é um atributo obrigatório!');
+      if (!user.email) throw new validationError ('O EMAIL é um atributo obrigatório!');
+      if (!user.password) throw new validationError ('A PASSWORD é um atributo obrigatório!');
 
       const userDb = await findOne({ email: user.email });
-      if (userDb) throw new validationError ('Email duplicado na BD');
+      if (userDb) throw new validationError ('EMAIL já registado!');
+    }
+
+    const save = async (user) => {
 
       const newUser={ ...user };
       newUser.password=getPasswdHash(user.password);
-      return app.db('users').insert(newUser,['id','email','name']);
+      return await app.db('users').insert(newUser,['id','email','name']);
+
     };
 
-    return { findAll, save, findOne };
+    return { findAll, validate, save, findOne };
 };

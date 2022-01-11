@@ -14,7 +14,6 @@ beforeAll(async () => {
     userA = { ...resA[0] };
     userB = { ...resB[0] };
     userA.token = jwt.encode(userA, secret);
-    console.log('OI -- ', userA.id, '---', userB.id, ' -- OI');
 })
 
 test('Test #9 - Ser amigos', () => {
@@ -29,8 +28,17 @@ test('Test #9 - Ser amigos', () => {
 test('Test #10 - Ver amigos', () => {
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
-    /* .send({ id: user.id}) */
+    .send({ id: userA.id})
         .then((res) => {
             expect(res.status).toBe(200);
         });
 });
+
+test('Test #11 - Remover Amigo', () => {
+    return request(app).delete(MAIN_ROUTE)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({ id: userA.id, idAmigo: userB.id })
+        .then((res) => {
+            expect(res.status).toBe(204);
+        })
+})

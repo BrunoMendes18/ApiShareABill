@@ -4,7 +4,7 @@ module.exports = (app) => {
     const router = express.Router();
 
     router.get('/', (req, res, next) => {
-        app.services.friend.findAll()
+        app.services.friend.findAll(req.body.id)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));
     });
@@ -15,6 +15,12 @@ module.exports = (app) => {
         .then((result) => res.status(201).json(result[0]))
         .catch((err) => next(err));
     });
+
+    router.delete('/', (req, res, next) => {
+        app.services.friend.del(req.body.id, red.body.idAmigo)
+        .then((result) => res.status(204).json(result[0]))
+        .catch((err) => next(err));
+    })
 
     return router
 

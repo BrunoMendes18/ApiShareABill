@@ -4,12 +4,15 @@ module.exports={
         connection:{
             host:'localhost',
             user:'postgres',
-            password:'1234', /* colocar a vossa pass */
+            password:'brunojesus18hd', /* colocar a vossa pass */
             database:'apishareabill',
         },
         debug:true,
         migrations: {
             directory:'src/migrations',
+        },
+        seeds: {
+            directory:'src/seeds',
         },
         pool:{
             min:0,

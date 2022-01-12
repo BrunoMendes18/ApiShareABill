@@ -9,10 +9,16 @@ module.exports = (app) => {
         .catch((err)=>next(err));
     });
 
-    const validate = (req, res, next) => {
-        app.services.group.validate({...req.body})
-        .then(() => next())
+    router.get('/:id', (req, res, next) => {
+        app.services.group.findOne(req.params.id)
+        .then((result) => res.status(200).json(result[0]))
         .catch((err) => next(err));
+    })
+
+    const validate = (req, res, next) => {
+        app.services.group.validate({ ...req.body })
+            .then(() => next())
+            .catch((err) => next(err));
     };
 
     router.post('/', validate, (req, res, next) => {

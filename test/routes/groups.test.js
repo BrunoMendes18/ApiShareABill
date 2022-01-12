@@ -48,7 +48,19 @@ test('Test #12 - Ver Grupos',()=>{
     });
 });
 
-test('Test #13 - Adicionar Membro Ao grupo', () => {
+test('Test #13 - Ver grupo selecionado', () => {
+    console.log('------------ ' ,grupoA.id, ' ----------')
+    return request(app).get(`${MAIN_ROUTE}/${grupoA.id}`)
+    .set('authorization', `bearer ${userA.token}`)
+    .then((res) => {
+        console.log('---------- ', res.body, ' ------------')
+          
+        expect(res.status).toBe(200);
+        expect(res.body.nome).toBe('Grupo1');
+    })
+})
+
+test('Test #14 - Adicionar Membro Ao grupo', () => {
     return request(app).post(SEC_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
       .send({ user_id:userA.id, grupo_id:grupoA.id})
@@ -58,7 +70,7 @@ test('Test #13 - Adicionar Membro Ao grupo', () => {
 });
 
 
-test('Test #14 - Remover Membro Ao grupo', () => {
+test('Test #15 - Remover Membro Ao grupo', () => {
     return app.db('membrosGrupo').insert(
         { user_id:userA.id, grupo_id:grupoA.id }, ['user_id'],
     ).then((mem) => request(app).delete(`${SEC_ROUTE}/${mem[0].user_id}`)
@@ -68,7 +80,7 @@ test('Test #14 - Remover Membro Ao grupo', () => {
         }));
 });
 
-test('Test #15 - Filtrar por todos os grupos',()=>{
+test('Test #16 - Filtrar por todos os grupos',()=>{
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .then((res)=>{
@@ -76,6 +88,3 @@ test('Test #15 - Filtrar por todos os grupos',()=>{
         expect(res.body.length).toBeGreaterThan(0);
     });
 });
-
-
-

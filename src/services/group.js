@@ -6,10 +6,14 @@ module.exports = (app) => {
         return app.db('grupo')/* .where(filter) */.select('*');
     };
 
-    const validate = (grupo) => {
-        if (!grupo.nome) throw new validationError('O NOME é um atributo obrigatório!');
-        if (!grupo.data) throw new validationError('A DATA é um atributo obrigatório!');
-        if (!grupo.admin) throw new validationError('ADMIN é um atributo obrigatório!');
+    const findOne = async (id) => {
+        return await app.db('grupo').where({id: id});
+    }
+
+    const validate = async (grupo) => {
+        if (!grupo.nome) throw new validationError ('O NOME é um atributo obrigatório!');
+        if (!grupo.data) throw new validationError ('A DATA é um atributo obrigatório!');
+        if (!grupo.admin) throw new validationError ('ADMIN é um atributo obrigatório!');
     };
 
     const save = (grupo) => {
@@ -26,5 +30,5 @@ module.exports = (app) => {
           .where({ user_id })
           .del();
     };
-    return { findAll, validate, save, AddToGroup, RemoveToGroup };
+    return { findAll, validate, save, AddToGroup, RemoveToGroup, findOne };
 }

@@ -11,5 +11,15 @@ module.exports = (app) => {
         return await app.db('grupo').insert(grupo);
     }
 
-    return { findAll, save};
+    const AddToGroup = async (membroGrupo) => {
+
+        return await app.db('membrosGrupo').insert(membroGrupo);
+    }
+
+    const RemoveToGroup = (user_id) => {
+        return app.db('membrosGrupo')
+          .where({ user_id })
+          .del();
+    };
+    return { findAll, save, AddToGroup, RemoveToGroup};
 }

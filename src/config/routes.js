@@ -11,5 +11,4 @@ module.exports = (app) =>{
     .all(app.config.passport.authenticate())
     .get(app.routes.grupo.findAll)
     .post(app.routes.grupo.create);
-
 };

@@ -3,6 +3,7 @@ const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/grupo';
+const SEC_ROUTE = '/v1/membroGrupo';
 
 const secret = 'ipca!DWM@202122';
 const userA ={id: 10000, name: 'User IPCA #1', email: 'user1@ipca.pt', password: '56789'};
@@ -32,7 +33,28 @@ test('Test #12 - Ver Grupos',()=>{
     });
 });
 
-test('Test #14 - Filtrar por todos os grupos',()=>{
+test('Test #13 - Adicionar Membro Ao grupo', () => {
+    return request(app).post(SEC_ROUTE)
+    .set('authorization', `bearer ${userA.token}`)
+      .send({ user_id:userA.id, grupo_id:grupoA.id})
+      .then((res) => {
+          console.log(res.body);
+          expect(res.status).toBe(201);
+    });
+});
+
+
+test('Test #14 - Remover Membro Ao grupo', () => {
+    return app.db('membrosGrupo').insert(
+        { user_id:userA.id, grupo_id:grupoA.id }, ['user_id'],
+    ).then((mem) => request(app).delete(`${SEC_ROUTE}/${mem[0].user_id}`)
+        .set('authorization', `bearer ${userA.token}`)
+        .then((res) => {
+            expect(res.status).toBe(204);;
+        }));
+});
+
+test('Test #15 - Filtrar por todos os grupos',()=>{
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .then((res)=>{

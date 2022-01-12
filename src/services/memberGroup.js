@@ -5,5 +5,11 @@ module.exports = (app) => {
         return await app.db('membrosGrupo').insert(membrosGrupo);
     }
 
-    return { save };
+    const remove = (user_id) => {
+        return app.db('membrosGrupo')
+          .where({ user_id })
+          .del();
+    };
+
+    return { save, remove };
 }

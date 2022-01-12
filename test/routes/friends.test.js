@@ -45,6 +45,8 @@ test('Test #11 - Ver Amigo', () => {
     .send({ id: userA.id})
         .then((res) => {
             expect(res.status).toBe(200);
+            expect(res.body[0].name).toBe('Xavier Monteiro');
+            
         });
 })
 

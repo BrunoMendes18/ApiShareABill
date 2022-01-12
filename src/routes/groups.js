@@ -9,8 +9,15 @@ module.exports = (app) => {
         .catch((err)=>next(err));
     });
 
-    router.post('/', (req, res, next) => {
-        app.services.group.save(req.body)
+    const validate = (req, res, next) => {
+        app.services.group.validate({...req.body})
+        .then(() => next())
+        .catch((err) => next(err));
+    };
+
+    router.post('/', validate, (req, res, next) => {
+        const info = {...req.body};
+        app.services.group.save(info)
         .then((result) => res.status(201).json(result[0]))
         .catch((err) => next(err));
     });

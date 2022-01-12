@@ -14,15 +14,30 @@ beforeAll(() => {
     return app.db.seed.run();
 })
 
-test('Test #11 - Criar Grupo', () => {
+test('Test #10 - Criar Grupo', () => {
     return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
-      .send({ nome: 'Grupo1', desc: 'descricao' , data: new Date(), admin: userA.id})
+      .send({ nome: 'Grupo1', desc: 'descricao', data: new Date(), admin: userA.id})
       .then((res) => {
           expect(res.status).toBe(201);
     });
 });
-//falta validacao sem nome
+
+describe('Test #11 - Criação inválida ...', () => {
+    const testTemplate = (newData, errorMessage) => {
+        return request(app).post(MAIN_ROUTE)
+        .set('authorization', `bearer ${userA.token}`)
+        .send({ nome: 'Grupo 2', desc: 'descricao' , data: new Date(), admin: userA.id, ...newData })
+        .then((res) => {
+            expect(res.status).toBe(400);
+            expect(res.body.error).toBe(errorMessage);
+        });
+    };
+
+    test('Test #11.1 - Inserir sem nome', () => testTemplate({ nome:null }, 'O NOME é um atributo obrigatório!'));
+    test('Test #11.2 - Inserir sem data', () => testTemplate({ data: null }, 'A DATA é um atributo obrigatório!'));
+    test('Test #11.3 - Inserir sem admin', () => testTemplate({ admin: null }, 'ADMIN é um atributo obrigatório!'));
+});
 
 test('Test #12 - Ver Grupos',()=>{
     return request(app).get(MAIN_ROUTE)
@@ -38,7 +53,6 @@ test('Test #13 - Adicionar Membro Ao grupo', () => {
     .set('authorization', `bearer ${userA.token}`)
       .send({ user_id:userA.id, grupo_id:grupoA.id})
       .then((res) => {
-          console.log(res.body);
           expect(res.status).toBe(201);
     });
 });

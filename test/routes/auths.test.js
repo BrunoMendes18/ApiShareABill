@@ -2,7 +2,7 @@ const request=require('supertest');
 const app=require('../../src/app');
 const mail=`${Date.now()}@gmail.com`;
 
-test('Test #4 - Receber token ao autenticar',()=>{
+test('Test #1 - Receber token ao autenticar',()=>{
     return app.services.user.save(
         {name: 'Bruno Auth', email: mail,password: '12345'}
     ).then(()=>request(app).post('/auth/signin')
@@ -14,7 +14,7 @@ test('Test #4 - Receber token ao autenticar',()=>{
     });
 });
 
-test('Test #5 - Tentativa de autenticação errada', ()=>{
+test('Test #2 - Tentativa de autenticação errada', ()=>{
     const mail=`${Date.now()}@gmail.com`;
     return app.services.user.save(
         {name: 'Bruno Auth', email: mail, password: '12345'}

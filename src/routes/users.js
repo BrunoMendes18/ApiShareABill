@@ -16,13 +16,6 @@ module.exports=(app)=>{
     };
 
     router.post('/', validate, (req, res, next) => {
-       /*  try{
-            const result=await app.services.user.save(req.body);
-            return res.status(201).json(result[0]);
-        }catch(err){
-            return next(err);
-        } */
-
         const user = { ...req.body };
             app.services.user.save(user)
             .then((result) => res.status(201).json(result[0]))

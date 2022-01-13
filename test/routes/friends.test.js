@@ -21,7 +21,7 @@ beforeAll(async () => {
     userA.token = jwt.encode(userA, secret);
 })
 
-test('Test #9 - Ser amigos', () => {
+test('Test #1 - Ser amigos', () => {
     return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .send({ user_id1 : userA.id, user_id2 : userB.id })
@@ -30,7 +30,7 @@ test('Test #9 - Ser amigos', () => {
     });
 });
 
-test('Test #10 - Ver amigos', () => {
+test('Test #2 - Ver amigos', () => {
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .send({ id: userA.id})
@@ -39,7 +39,7 @@ test('Test #10 - Ver amigos', () => {
         });
 });
 
-test('Test #11 - Ver Amigo', () => {
+test('Test #3 - Ver Amigo', () => {
     return request(app).get(`${MAIN_ROUTE}/${userB.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .send({ id: userA.id})
@@ -50,7 +50,7 @@ test('Test #11 - Ver Amigo', () => {
         });
 })
 
-test('Test #12 - Remover Amigo', () => {
+test('Test #4 - Remover Amigo', () => {
     return app.db('amigos').insert({ user_id1: userC.id, user_id2: userA.id }, ['user_id2'])
     .then((ami) => request(app).delete(`${MAIN_ROUTE}/${ami[0].user_id2}`)
     .set('authorization', `bearer ${userA.token}`)

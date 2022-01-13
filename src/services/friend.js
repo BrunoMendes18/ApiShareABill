@@ -12,6 +12,10 @@ module.exports = (app) => {
         else return await app.db('users').where({id: idAmigo});
     }
 
+    const findByName = async (nome) => {
+        return await app.db('users').where( 'name',  'like', `%${nome.name}%` ).orderBy('name', 'desc');
+    }
+
     const save = async (amigos) => {
         return await app.db('amigos').insert(amigos);
     };
@@ -23,5 +27,5 @@ module.exports = (app) => {
         else return priTent;
     };
 
-    return { findAll, save, remover, findOne };  
-}
+    return { findAll, save, remover, findOne, findByName };  
+} 

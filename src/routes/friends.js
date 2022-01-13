@@ -16,6 +16,13 @@ module.exports = (app) => {
         .catch((err) => next(err));
     })
 
+    router.get('/', (req, res, next) => {
+        console.log('------------------- ', ...req.body, ' -------------------------------- ', req.body);
+        app.services.friend.findByName(req.body.name)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err));
+    })
+
     router.post('/', (req, res, next) => {
         const amigos = { ...req.body }
         app.services.friend.save(amigos)

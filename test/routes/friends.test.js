@@ -59,3 +59,13 @@ test('Test #4 - Remover Amigo', () => {
             expect(res.status).toBe(204);
         })
 })
+
+test('Test #5 - Pesquisar Amigo', () => {
+    return app.db('amigos').get(MAIN_ROUTE)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({name: 'Xavi'})
+    .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body[0].name).toBe('Xavier Monteiro');
+    })
+})

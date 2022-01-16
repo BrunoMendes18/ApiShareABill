@@ -20,6 +20,11 @@ module.exports = (app) => {
         return app.db('grupo').insert(grupo);
     };
 
+    const atualizar = (id, dados) => {
+        const resultado = app.db('grupo').where({id: id}).update(dados, '*')
+        return resultado;
+    }
+
     const AddToGroup = async (membroGrupo) => {
 
         return await app.db('membrosGrupo').insert(membroGrupo);
@@ -30,5 +35,5 @@ module.exports = (app) => {
           .where({ user_id })
           .del();
     };
-    return { findAll, validate, save, AddToGroup, RemoveToGroup, findOne };
+    return { findAll, validate, save, AddToGroup, RemoveToGroup, findOne, atualizar };
 }

@@ -13,7 +13,23 @@ module.exports = (app) => {
     }
 
     const findByName = async (nome) => {
-        return await app.db('users').where( 'name',  'like', `%${nome.name}%` ).orderBy('name', 'desc');
+        const pesq = await app.db('users').where('name', 'like', `%${nome.name}%`).orderBy('name', 'asc');
+        let resultado = [];
+        let j = 0;
+
+        for (i = 0; i < pesq.length; i++) {
+            const amigos = await app.db('amigos')
+                .where({user_id1: nome.id, user_id2: pesq[i].id})
+                .orWhere({user_id1: pesq[i].id, user_id2: nome.id});
+
+            if(amigos.length > 0) {
+                resultado[j] = pesq[i];
+                j = j + 1;
+            }
+
+        }
+
+        return resultado;
     }
 
     const save = async (amigos) => {

@@ -25,15 +25,32 @@ module.exports = (app) => {
         return resultado;
     }
 
-    const AddToGroup = async (membroGrupo) => {
-
-        return await app.db('membrosGrupo').insert(membroGrupo);
+    const addToGroup = async (grupo, membro) => {
+        return await app.db('membrosGrupo').insert({user_id: membro.user_id, grupo_id: grupo});
     };
 
-    const RemoveToGroup = (user_id) => {
-        return app.db('membrosGrupo')
-          .where({ user_id })
+    const RemoveToGroup = async (user_id, grupo) => {
+        return await app.db('membrosGrupo')
+          .where({user_id: user_id, grupo_id: grupo.id})
           .del();
     };
-    return { findAll, validate, save, AddToGroup, RemoveToGroup, findOne, atualizar };
+
+    const pesquisar = async (dados) => {
+        const pesq = await app.db('grupo').where('nome', 'like', `%${dados.nome}%`).orderBy('nome', 'asc');
+        let resultado = [];
+        let j = 0;
+
+        for(i = 0; pesq.length > i; i++) {
+            const pertence = await app.db('membrosGrupo').where({user_id: dados.id, grupo_id: pesq[i].id})
+
+            if(pertence.length > 0) {
+                resultado[j] = pesq[i];
+                j++;
+            }
+        }
+
+        return resultado;
+    }
+
+    return { findAll, validate, save, addToGroup, RemoveToGroup, findOne, atualizar, pesquisar };
 }

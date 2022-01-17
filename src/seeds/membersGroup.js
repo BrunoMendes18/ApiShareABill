@@ -14,6 +14,8 @@ exports.seed = (knex) => {
     ]))
     .then(() => knex('membrosGrupo').insert([
       { user_id:10000, grupo_id:10000 },
+      { user_id:10001, grupo_id:10000 },
+      { user_id:10000, grupo_id:10001 },
       { user_id:10001, grupo_id:10001 },
     ]))
     .then(() => knex('amigos').insert([

@@ -9,6 +9,7 @@ module.exports = (app) => {
     secureRouter.use('/amigos', app.routes.friends);
     secureRouter.use('/grupo', app.routes.groups);
     secureRouter.use('/despesas', app.routes.expenses);
+    secureRouter.use('/membroDespesa', app.routes.membersExpenses);
 
     app.use('/v1', app.config.passport.authenticate(), secureRouter);
 };

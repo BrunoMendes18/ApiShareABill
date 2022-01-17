@@ -14,7 +14,7 @@ beforeAll(() => {
     return app.db.seed.run();
 })
 
-test('Test #10 - Criar Grupo', () => {
+test('Test #1 - Criar Grupo', () => {
     return request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
       .send({ nome: 'Grupo1', desc: 'descricao', data: new Date(), admin: userA.id})
@@ -23,7 +23,7 @@ test('Test #10 - Criar Grupo', () => {
     });
 });
 
-describe('Test #11 - Criação inválida ...', () => {
+describe('Test #2 - Criação inválida ...', () => {
     const testTemplate = (newData, errorMessage) => {
         return request(app).post(MAIN_ROUTE)
         .set('authorization', `bearer ${userA.token}`)
@@ -34,12 +34,12 @@ describe('Test #11 - Criação inválida ...', () => {
         });
     };
 
-    test('Test #11.1 - Inserir sem nome', () => testTemplate({ nome:null }, 'O NOME é um atributo obrigatório!'));
-    test('Test #11.2 - Inserir sem data', () => testTemplate({ data: null }, 'A DATA é um atributo obrigatório!'));
-    test('Test #11.3 - Inserir sem admin', () => testTemplate({ admin: null }, 'ADMIN é um atributo obrigatório!'));
+    test('Test #2.1 - Inserir sem nome', () => testTemplate({ nome:null }, 'O NOME é um atributo obrigatório!'));
+    test('Test #2.2 - Inserir sem data', () => testTemplate({ data: null }, 'A DATA é um atributo obrigatório!'));
+    test('Test #2.3 - Inserir sem admin', () => testTemplate({ admin: null }, 'ADMIN é um atributo obrigatório!'));
 });
 
-test('Test #12 - Ver Grupos',()=>{
+test('Test #3 - Ver Grupos',()=>{
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .then((res)=>{
@@ -48,39 +48,39 @@ test('Test #12 - Ver Grupos',()=>{
     });
 });
 
-test('Test #13 - Ver grupo selecionado', () => {
+test('Test #4 - Ver grupo selecionado', () => {
     console.log('------------ ' ,grupoA.id, ' ----------')
     return request(app).get(`${MAIN_ROUTE}/${grupoA.id}`)
     .set('authorization', `bearer ${userA.token}`)
-    .then((res) => {
-        console.log('---------- ', res.body, ' ------------')
-          
+    .then((res) => {          
         expect(res.status).toBe(200);
         expect(res.body.nome).toBe('Grupo1');
     })
 })
 
-test('Test #14 - Adicionar Membro Ao grupo', () => {
-    return request(app).post(SEC_ROUTE)
+test('Test #5 - Adicionar Membro Ao grupo', () => {
+    return request(app).post(`${MAIN_ROUTE}/${grupoA.id}`)
     .set('authorization', `bearer ${userA.token}`)
-      .send({ user_id:userA.id, grupo_id:grupoA.id})
+      .send({ user_id:userA.id})
       .then((res) => {
           expect(res.status).toBe(201);
     });
 });
 
 
-test('Test #15 - Remover Membro Ao grupo', () => {
+test('Test #6 - Remover Membro Ao grupo', () => {
     return app.db('membrosGrupo').insert(
         { user_id:userA.id, grupo_id:grupoA.id }, ['user_id'],
-    ).then((mem) => request(app).delete(`${SEC_ROUTE}/${mem[0].user_id}`)
+    ).then((mem) => request(app).delete(`${MAIN_ROUTE}/${mem[0].user_id}`)
         .set('authorization', `bearer ${userA.token}`)
-        .then((res) => {
+        .send({id: grupoA.id})
+        .then((res) => { 
+            console.log('********** ', res.body,' ***********')
             expect(res.status).toBe(204);;
         }));
 });
 
-test('Test #16 - Filtrar por todos os grupos',()=>{
+test('Test #7 - Filtrar por todos os grupos',()=>{
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
     .then((res)=>{
@@ -88,3 +88,26 @@ test('Test #16 - Filtrar por todos os grupos',()=>{
         expect(res.body.length).toBeGreaterThan(0);
     });
 });
+
+
+test('Test #8 - Pesquisar grupo', () => {
+    return request(app).get(MAIN_ROUTE)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({id: userA.id, nome: 'Grupo'})
+    .then((res) => {
+        expect(res.status).toBe(200)
+        expect(res.body[0].nome).toBe('Grupo2')
+    })
+})
+
+
+test('Test #9 - Atualizar grupo', () => {
+    return request(app).put(`${MAIN_ROUTE}/10001`)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({nome: 'Grupo 2 Atualizado', desc: 'Férias na praia'})
+    .then((res) => {
+        expect(res.status).toBe(200);
+        expect(res.body.nome).toBe('Grupo 2 Atualizado')
+        expect(res.body.desc).toBe('Férias na praia')
+    })
+})

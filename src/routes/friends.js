@@ -5,20 +5,19 @@ module.exports = (app) => {
     const router = express.Router();
 
     router.get('/', (req, res, next) => {
-        app.services.friend.findAll(req.body.id)
-        .then((result) => res.status(200).json(result))
-        .catch((err) => next(err));
+        if(!req.body.name){
+            app.services.friend.findAll(req.body.id)
+            .then((result) => res.status(200).json(result))
+            .catch((err) => next(err));
+        } else {
+            app.services.friend.findByName(req.body)
+            .then((result) => res.status(200).json(result))
+            .catch((err) => next(err));
+        }
     });
 
     router.get('/:id', (req, res, next) => {
         app.services.friend.findOne(req.body.id, req.params.id)
-        .then((result) => res.status(200).json(result))
-        .catch((err) => next(err));
-    })
-
-    router.get('/', (req, res, next) => {
-        console.log('------------------- ', ...req.body, ' -------------------------------- ', req.body);
-        app.services.friend.findByName(req.body.name)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));
     })

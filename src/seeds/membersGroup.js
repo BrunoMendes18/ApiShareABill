@@ -2,6 +2,7 @@ exports.seed = (knex) => {
   return knex('membrosGrupo').del()
   .then(() => knex('amigos').del())
     .then(() => knex('grupo').del())
+    .then(() => knex('despesa').del())
     .then(() => knex('users').del())
     .then(() => knex('users').insert([
       { id: 10000, name: 'User IPCA #1', email: 'user1@ipca.pt', password: '56789'},
@@ -13,6 +14,8 @@ exports.seed = (knex) => {
     ]))
     .then(() => knex('membrosGrupo').insert([
       { user_id:10000, grupo_id:10000 },
+      { user_id:10001, grupo_id:10000 },
+      { user_id:10000, grupo_id:10001 },
       { user_id:10001, grupo_id:10001 },
     ]))
     .then(() => knex('amigos').insert([

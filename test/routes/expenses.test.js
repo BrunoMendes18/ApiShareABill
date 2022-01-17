@@ -120,7 +120,7 @@ test('Test #7 - Inserir membro á despesa', () => {
 });
 
 
-test('Test #7 - Ver membros da despesa', () => {
+test('Test #8 - Ver membros da despesa', () => {
 
     let expenseID = 91;
     return request(app).get(`${SEC_ROUTE}/${expenseID}`)

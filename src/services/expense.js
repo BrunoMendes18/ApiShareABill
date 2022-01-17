@@ -14,6 +14,12 @@ module.exports = (app) => {
         return app.db('despesa').select('*');
     }
 
+    const find = (filter = {}) =>{
+        return app.db('despesa').where(filter).first();
+    };
+
+
+
     const save = async (expense) => {
         console.log('----------------------------');
         console.log(expense);
@@ -26,5 +32,12 @@ module.exports = (app) => {
             .update(despesa, '*');
     }
 
-    return {save,findAll,validate,update};
+    const remove = async (id) =>{
+
+        return app.db('despesa')
+        .where({ id })
+        .del();
+    };
+
+    return {save,findAll,validate,update,find,remove};
 }

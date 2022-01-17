@@ -15,6 +15,14 @@ module.exports = (app) => {
         .catch((err) => next(err));
     });
 
+    router.get('/:id',(req,res,next) => {
+        app.services.expense.find({id: req.params.id})
+        .then((result) =>{ 
+            //if(result.pago !== req.user.id) return res.status(403).json({error: 'Não tem acesso ao recurso solicitado'});
+           return res.status(200).json(result);
+        }).catch((err)=> next(err));
+    });
+
     router.post('/',validate, (req, res, next) => {
         console.log('**************************************');
         console.log(req.body);
@@ -27,6 +35,12 @@ module.exports = (app) => {
         app.services.expense.update(req.params.id, req.body)
             .then((result)=> res.status(200).json(result[0]))
             .catch((err)=> next(err));
+    });
+
+    router.delete('/:id',(req,res,next) => {
+        app.services.expense.remove(req.params.id)
+        .then(()=> res.status(204).send())
+        .catch((err)=> next(err));
     });
     
 

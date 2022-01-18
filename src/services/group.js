@@ -25,16 +25,6 @@ module.exports = (app) => {
         return resultado;
     }
 
-    const addToGroup = async (grupo, membro) => {
-        return await app.db('membrosGrupo').insert({user_id: membro.user_id, grupo_id: grupo});
-    };
-
-    const RemoveToGroup = async (user_id, grupo) => {
-        return await app.db('membrosGrupo')
-          .where({user_id: user_id, grupo_id: grupo.id})
-          .del();
-    };
-
     const pesquisar = async (dados) => {
         const pesq = await app.db('grupo').where('nome', 'like', `%${dados.nome}%`).orderBy('nome', 'asc');
         let resultado = [];
@@ -52,5 +42,47 @@ module.exports = (app) => {
         return resultado;
     }
 
-    return { findAll, validate, save, addToGroup, RemoveToGroup, findOne, atualizar, pesquisar };
+    const deleteGroup = async (idGrupo, idUti) => {
+        let resultado = [];
+        let j = 0;
+
+        const admin = await app.db('grupo').where({ id: idGrupo})
+        console.log(admin ,'^^^^^^', admin[0].admin, '~~~~~~~', idUti.idUser,'+++++++++++ ', admin.admin == idUti.idUser, ' ----------------')
+        if (admin[0].admin == idUti.idUser){
+            const despesa = await app.db('despesa').where({ grupo_id: idGrupo })
+
+            if (despesa.length > 0) {
+                for (i = 0; i < despesa.length; i++) {
+                    const liquidado = await app.db('membrosDespesa').where({ desp_id: despesa[i].id })
+
+                    if (liquidado.deve > 0) {
+                        resultado[j] = liquidado[i];
+                        j++;
+                    }
+                }
+
+                if (resultado.length > 0) {
+                    throw new validationError ('Ainda há contas por pagar!')
+                }
+                else {
+                    for (i = 0; i < despesa.length; index++) {
+                        await app.db('membrosDespesa').where({ desp_id : despesa[i].id }).del()
+                    }
+                    await app.db('despesa').where({ grupo_id : idGrupo }).del()
+                    await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del()
+                    return await app.db('grupo').where({ id: idGrupo }).del()
+                }
+                
+            }
+            else {
+                await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del()
+                return await app.db('grupo').where({ id: idGrupo }).del()
+            }
+        }
+        else {
+            throw new validationError ('Você não é o administrador do grupo!')
+        }
+    }
+
+    return { findAll, validate, save, findOne, atualizar, pesquisar, deleteGroup };
 }

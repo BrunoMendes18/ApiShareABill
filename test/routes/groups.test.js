@@ -49,7 +49,6 @@ test('Test #3 - Ver Grupos',()=>{
 });
 
 test('Test #4 - Ver grupo selecionado', () => {
-    console.log('------------ ' ,grupoA.id, ' ----------')
     return request(app).get(`${MAIN_ROUTE}/${grupoA.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {          
@@ -59,9 +58,9 @@ test('Test #4 - Ver grupo selecionado', () => {
 })
 
 test('Test #5 - Adicionar Membro Ao grupo', () => {
-    return request(app).post(`${MAIN_ROUTE}/${grupoA.id}`)
+    return request(app).post(SEC_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
-      .send({ user_id:userA.id})
+      .send({ user_id:userA.id, grupo_id: grupoA.id})
       .then((res) => {
           expect(res.status).toBe(201);
     });
@@ -71,12 +70,11 @@ test('Test #5 - Adicionar Membro Ao grupo', () => {
 test('Test #6 - Remover Membro Ao grupo', () => {
     return app.db('membrosGrupo').insert(
         { user_id:userA.id, grupo_id:grupoA.id }, ['user_id'],
-    ).then((mem) => request(app).delete(`${MAIN_ROUTE}/${mem[0].user_id}`)
+    ).then((mem) => request(app).delete(SEC_ROUTE)
         .set('authorization', `bearer ${userA.token}`)
-        .send({id: grupoA.id})
-        .then((res) => { 
-            console.log('********** ', res.body,' ***********')
-            expect(res.status).toBe(204);;
+        .send({grupo_id: grupoA.id, user_id: mem[0].user_id})
+        .then((res) => {
+            expect(res.status).toBe(204);
         }));
 });
 
@@ -109,5 +107,17 @@ test('Test #9 - Atualizar grupo', () => {
         expect(res.status).toBe(200);
         expect(res.body.nome).toBe('Grupo 2 Atualizado')
         expect(res.body.desc).toBe('Férias na praia')
+    })
+})
+
+test('Test #10 - Eliminar Grupo', () => {
+    return request(app).delete(`${MAIN_ROUTE}/${grupoA.id}`)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({idUser: 10001})
+    .then((res) => {
+        console.log('*********** ', res.body, ' ************')
+        console.log('***********************')
+        console.log('***********************')
+        expect(res.status).toBe(204);
     })
 })

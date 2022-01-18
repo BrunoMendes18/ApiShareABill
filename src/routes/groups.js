@@ -35,16 +35,10 @@ module.exports = (app) => {
         .catch((err) => next(err));
     });
 
-    router.post('/:id', (req, res, next) => {
-        app.services.group.addToGroup(req.params.id, req.body)
-        .then((result) => res.status(201).json(result[0]))
-        .catch((err) => next(err));
-    });
-
     router.delete('/:id', (req, res, next) => {
-        app.services.group.RemoveToGroup(req.params.id, req.body)
-            .then(() => res.status(204).send())
-            .catch((err) => next(err));
+        app.services.group.deleteGroup(req.params.id, req.body)
+        .then(() => res.status(204).send())
+        .catch((err) => next(err));
     });
 
     router.put('/:id', (req, res, next) => {

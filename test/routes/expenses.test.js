@@ -12,7 +12,7 @@ let user;
 
 
 beforeAll(async () => {
-    const res = await app.services.user.save({ name: 'User Test Despesas #1', email: mail, password: '12345'});
+    const res = await app.services.user.save({ id: 1, name: 'User Test Despesas #1', email: mail, password: '12345'});
     user = { ...res[0] }; 
     console.log("Lindo:",user);
     user.token = jwt.encode(user, secret);

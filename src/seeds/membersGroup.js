@@ -2,6 +2,7 @@ exports.seed = (knex) => {
   return knex('membrosGrupo').del()
   .then(() => knex('amigos').del())
     .then(() => knex('grupo').del())
+    .then(() => knex('membrosDespesa'))
     .then(() => knex('despesa').del())
     .then(() => knex('users').del())
     .then(() => knex('users').insert([

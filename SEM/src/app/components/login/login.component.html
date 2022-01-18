@@ -1,1 +1,6 @@
-<p>login works!</p>
+<div class="form">
+  <input [(ngModel)]="email" type="text" placeholder="Email" required>
+  <input [(ngModel)]="password" type="password" placeholder="Password" required>
+  <button (click)="logIn()">LogIn</button>
+  <!-- <p>Se não tens conta regista <a [routerLink]="['/registar']">aqui</a></p> -->
+</div>

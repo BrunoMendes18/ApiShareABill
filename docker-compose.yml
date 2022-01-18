@@ -1,13 +1,25 @@
-version: '3.8'
+version: "3.3"
 
 services:
-  ica-members:
-    build: .
+  ica_db_postgres:
+    image: postgres:14.1-alpine
+    restart: ${DOCKER_RESTART}
+    env_file: ".env"
+    hostname: ${POSTGRES_HOST}
+    container_name: ${POSTGRES_CONTAINER}
+    expose:
+      - "${POSTGRES_PORT}"
     ports:
-      - 80:3000
+      - "${POSTGRES_PORT}:3000"
+    volumes:
+      - ica-db-data:/var/lib/postgresql/data
     networks:
-      - dwmnet
+      - ica-network
 
+volumes:
+  ica-db-data:
+
+    null
 networks:
-  dwmnet:
+  ica-network:
     driver: bridge

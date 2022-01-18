@@ -115,9 +115,6 @@ test('Test #10 - Eliminar Grupo', () => {
     .set('authorization', `bearer ${userA.token}`)
     .send({idUser: 10001})
     .then((res) => {
-        console.log('*********** ', res.body, ' ************')
-        console.log('***********************')
-        console.log('***********************')
         expect(res.status).toBe(204);
     })
 })

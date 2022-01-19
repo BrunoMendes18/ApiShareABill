@@ -1,0 +1,20 @@
+.wrapper{
+  width: 100%;
+	min-width: 300px;
+	margin-left: auto;
+
+	margin-bottom: 0px;
+	margin-right: auto;
+	background-color: #ecf0f1;
+	border: 1px #bdc3c7 solid;
+}
+
+.conteiner{
+  margin-top: 50px;
+  min-height: 300px;
+  padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 8%;
+    margin-left: 8%;
+
+}

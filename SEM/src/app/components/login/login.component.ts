@@ -13,14 +13,25 @@ export class LoginComponent implements OnInit {
   password = ""
   router: Router;
 
+  resultado : any;
+
   constructor(private pedir : MainService, router : Router) { this.router = router; }
 
   logIn() {
     this.pedir.doLogIn(this.email, this.password)
     .subscribe(arg => {
-      console.log("entrou" + arg);
-      console.log(arg);
+      this.resultado = arg;
+      console.log(this.resultado);
+      this.pedir.userToken = this.resultado.token;
+      console.log('User Token: ',this.pedir.userToken);
+      this.saveToken(this.pedir.userToken);
     })
+  }
+
+  saveToken(token:any)
+  {
+    localStorage.setItem("user-token",token);
+    console.log('salvei cookie');
   }
 
   ngOnInit(): void {

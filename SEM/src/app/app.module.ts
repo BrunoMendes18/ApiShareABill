@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { RegistarComponent } from './components/registar/registar.component';
+import { FriendsComponent } from './components/friends/friends.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { RegistarComponent } from './components/registar/registar.component';
     HomeComponent,
     NavBarComponent,
     RegistarComponent,
+    FriendsComponent,
   ],
   imports: [
     BrowserModule,

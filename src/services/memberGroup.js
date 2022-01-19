@@ -1,3 +1,5 @@
+const validationError = require("../errors/validationError");
+
 module.exports = (app) => {
 
     const addToGroup = async (dados) => {
@@ -15,9 +17,9 @@ module.exports = (app) => {
 
             return eliminado
         }
-        
-        
-        
+        else {
+            throw new validationError ('Erro: User não removido!');
+        }
     };
 
     return { addToGroup, RemoveToGroup }

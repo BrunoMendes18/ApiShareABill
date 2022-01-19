@@ -3,8 +3,6 @@ const validationError = require('../errors/validationError');
 module.exports = (app) => {
     
     const validate =async (data) =>{
-        console.log('****-------- ');
-        console.log(data);
         if (!data.nome) throw new validationError('O NOME é um atributo obrigatório');
         if (!data.quanti) throw new validationError('O VALOR da DESPESA é um atributo obrigatório');
         if (!data.tipo) throw new validationError('A maneira como DISTRIBUI a despesa é um atributo obrigatório');
@@ -33,8 +31,8 @@ module.exports = (app) => {
     }
 
     const remove = async (id) =>{
-
-        return app.db('despesa')
+        await app.db('membrosDespesa').where({ desp_id: id })
+        return await app.db('despesa')
         .where({ id })
         .del();
     };

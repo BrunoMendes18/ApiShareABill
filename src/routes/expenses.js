@@ -24,14 +24,12 @@ module.exports = (app) => {
     });
 
     router.post('/',validate, (req, res, next) => {
-        console.log('**************************************');
-        console.log(req.body);
         app.services.expense.save(req.body)
         .then((result) => res.status(201).json(result[0]))
         .catch((err) => next(err));
     });
 
-    router.put('/:id',validate,(req,res,next) =>{
+    router.put('/:id',(req,res,next) =>{
         app.services.expense.update(req.params.id, req.body)
             .then((result)=> res.status(200).json(result[0]))
             .catch((err)=> next(err));

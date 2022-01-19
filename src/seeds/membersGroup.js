@@ -21,5 +21,13 @@ exports.seed = (knex) => {
     ]))
     .then(() => knex('amigos').insert([
       { user_id1: 10000, user_id2: 10001 },
-    ]));
+    ]))
+    .then(() => knex('despesa').insert([
+      { id:10000, nome: 'Despesa1', quanti: 50, tipo: 1, pago: 10000 },
+      { id:10001, nome: 'Despesa2', quanti: 100, tipo: 1, grupo_id: 10001, pago: 10001 },
+    ]))
+    .then(() => knex('membrosDespesa').insert([
+      { user_id: 10001, deve: 25, desp_id: 10000 },
+      { user_id: 10000, deve: 50, desp_id: 10001 },
+    ]))
 };

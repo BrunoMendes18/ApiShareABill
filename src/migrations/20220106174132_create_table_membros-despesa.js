@@ -7,7 +7,9 @@ exports.up = (knex) => {
         t.integer('desp_id')
             .references('id')
             .inTable('despesa')
-            .notNull();
+            .notNull()
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE');
         t.decimal('deve', 15, 2).notNull();
     });
 };

@@ -6,7 +6,9 @@ exports.up = (knex) => {
         t.decimal('tipo', 1, 0).notNull();
         t.integer('grupo_id')
             .references('id')
-            .inTable('grupo');
+            .inTable('grupo')
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE');
         
         t.integer('pago')
             .references('id')

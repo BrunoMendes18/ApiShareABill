@@ -2,8 +2,8 @@ const validationError = require("../errors/validationError");
 
 module.exports = (app) => {
     
-    const findAll = (/* filter = {} */) => {
-        return app.db('grupo')/* .where(filter) */.select('*');
+    const findAll = () => {
+        return app.db('grupo').select('*');
     };
 
     const findOne = async (id) => {
@@ -67,10 +67,10 @@ module.exports = (app) => {
                 else {
                     for (i = 0; i < despesa.length; index++) {
                         await app.db('membrosDespesa').where({ desp_id : despesa[i].id }).del()
-                    }
-                    await app.db('despesa').where({ grupo_id : idGrupo }).del()
-                    await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del()
-                    return await app.db('grupo').where({ id: idGrupo }).del()
+                    };
+                    await app.db('despesa').where({ grupo_id : idGrupo }).del();
+                    await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del();
+                    return await app.db('grupo').where({ id: idGrupo }).del();
                 }
                 
             }

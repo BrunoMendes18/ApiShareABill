@@ -7,7 +7,9 @@ exports.up = (knex) => {
         t.integer('grupo_id')
             .references('id')
             .inTable('grupo')
-            .notNull();
+            .notNull()
+            .onDelete('CASCADE')
+            .onUpdate('CASCADE');
     });
 };
 

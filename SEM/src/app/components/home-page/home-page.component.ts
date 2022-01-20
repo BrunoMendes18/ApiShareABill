@@ -10,6 +10,7 @@ import { MainService } from 'src/app/services/main.service';
 export class HomePageComponent implements OnInit {
 
   router: Router;
+  grupos:any;
 
   constructor(private pedir : MainService ,router: Router) { this.router = router }
 
@@ -23,10 +24,18 @@ export class HomePageComponent implements OnInit {
     if(!localStorage.getItem("user-token")) {
       this.router.navigate(['/login'])
     }
+
+      this.pedir.seeGrupos()
+      .subscribe(arg => {
+        this.grupos = arg;
+        console.log(arg)
+      })
+
   }
 
   verGrupo(id: any) {
-    alert('Vai para o grupo'+ id);
+    localStorage.setItem('idGrupo', id);
+    this.router.navigate(['/grupo']);
   }
 
 }

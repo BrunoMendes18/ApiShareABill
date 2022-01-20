@@ -2,8 +2,8 @@ const validationError = require("../errors/validationError");
 
 module.exports = (app) => {
     
-    const findAll = (filter) => {
-        const grupos = app.db('membrosGrupo').where({user_id: filter.user_id}).select();
+    const findAll = async (id) => {
+        const grupos = await app.db('membrosGrupo').where({user_id: id.user_id}).select();
         let resultado = [];
 
         for (i = 0; i < grupos.length; i++) {

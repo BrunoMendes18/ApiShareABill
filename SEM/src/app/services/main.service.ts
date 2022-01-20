@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class MainService {
 
   linkLogin = "/api/auth/signin";
   linkRegistar = "/api/auth/signup";
-  linkGrupos = "api/grupo/";
+  linkGrupos = "api/v1/grupo/";
 
   userToken : string | null ="";
   userId: any;
@@ -23,7 +23,15 @@ export class MainService {
     return this.http.post(this.linkRegistar, ({name: name,email: email, password: password}));
   }
 
-  seeGrupo(user_id: number){
-    return this.http.get(this.linkGrupos, {params:{ user_id: user_id }});
+  seeGrupos(){
+    let headers = new HttpHeaders();
+    let body = new HttpParams();
+
+    const authorization = 'bearer ' + this.userToken;
+
+    headers = headers.append('authorization', authorization);
+    let reqBodyObj = {"user_id": this.userId}
+
+    return this.http.get(this.linkGrupos, {{headers}, reqBodyObj} ); // ({ user_id: this.userId })
   }
 }

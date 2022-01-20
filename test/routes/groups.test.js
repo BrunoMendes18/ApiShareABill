@@ -42,6 +42,7 @@ describe('Test #2 - Criação inválida ...', () => {
 test('Test #3 - Ver Grupos',()=>{
     return request(app).get(MAIN_ROUTE)
     .set('authorization', `bearer ${userA.token}`)
+    .send({ user_id: userA.id })
     .then((res)=>{
         expect(res.status).toBe(200);       
         expect(res.body.length).toBeGreaterThan(0);

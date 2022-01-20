@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { RegistarComponent } from './components/registar/registar.component';
 import { FriendsComponent } from './components/friends/friends.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FriendsComponent } from './components/friends/friends.component';
     NavBarComponent,
     RegistarComponent,
     FriendsComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,

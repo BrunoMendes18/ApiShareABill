@@ -19,7 +19,7 @@ module.exports=(app)=>{
                     email:user.email,
                 };
                 const token=jwt.encode(payload,secret);
-                res.status(200).json({ token });
+                res.status(200).json({ token, id: user.id });
             } else throw new validationError('Autenticação inválida!');
         }).catch((err)=>next(err));
     });

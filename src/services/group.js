@@ -1,19 +1,18 @@
 const validationError = require('../errors/validationError');
 
 module.exports = (app) => {
-    
-    const findAll = async (id) => {
-        const grupos = await app.db('membrosGrupo').where({user_id: id.user_id}).select();
-        let resultado = [];
+  const findAll = async (id) => {
+    const grupos = await app.db('membrosGrupo').where({ user_id: id.user_id }).select();
+    const resultado = [];
 
-        if(grupos.length < 0) throw new validationError ('Não pretence a nenhum grupo')
+    if (grupos.length < 0) throw new validationError('Não pretence a nenhum grupo');
 
-        for (i = 0; i < grupos.length; i++) {
-            resultado[i] = app.db('grupo').where({ id: grupos[i].grupo_id })
-        }
-        
-        return resultado
-    };
+    for (i = 0; i < grupos.length; i++) {
+      resultado[i] = app.db('grupo').where({ id: grupos[i].grupo_id });
+    }
+
+    return resultado;
+  };
 
   const findOne = async (id) => {
     return await app.db('grupo').where({ id });

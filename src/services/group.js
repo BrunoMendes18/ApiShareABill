@@ -6,6 +6,8 @@ module.exports = (app) => {
         const grupos = await app.db('membrosGrupo').where({user_id: id.user_id}).select();
         let resultado = [];
 
+        if(grupos.length < 0) throw new validationError ('Não pretence a nenhum grupo')
+
         for (i = 0; i < grupos.length; i++) {
             resultado[i] = app.db('grupo').where({ id: grupos[i].grupo_id })
         }

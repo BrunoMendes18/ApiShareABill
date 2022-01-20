@@ -24,14 +24,27 @@ export class MainService {
   }
 
   seeGrupos(){
-    let headers = new HttpHeaders();
+   /*  let headers = new HttpHeaders();
     let body = new HttpParams();
 
     const authorization = 'bearer ' + this.userToken;
 
-    headers = headers.append('authorization', authorization);
-    let reqBodyObj = {"user_id": this.userId}
+    headers = headers.append('authorization', authorization); */
+    let reqBodyObj = {'user_id': this.userId}
 
-    return this.http.get(this.linkGrupos, {{headers}, reqBodyObj} ); // ({ user_id: this.userId })
+    const httpOptions = {
+      Headers: new HttpHeaders({
+        'authorization': 'bearer ' + this.userToken,
+        'Content-Type': 'application/json; charset=utf-8'
+      }),
+      body: new HttpParams({
+        'fromObject': reqBodyObj,
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    console.log(httpOptions);
+
+    return this.http.get(this.linkGrupos, httpOptions); // ({ user_id: this.userId }) /  {headers, reqBodyObj}
   }
 }

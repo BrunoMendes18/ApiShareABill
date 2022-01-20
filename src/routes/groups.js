@@ -5,7 +5,7 @@ module.exports = (app) => {
 
     router.get('/', (req, res, next) => {
         if(!req.body.nome) {
-            app.services.group.findAll()
+            app.services.group.findAll(req.body)
             .then((result)=>res.status(200).json(result))
             .catch((err)=>next(err));
         } else {

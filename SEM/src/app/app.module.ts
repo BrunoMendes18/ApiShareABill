@@ -9,8 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { RegistarComponent } from './components/registar/registar.component';
 import { FriendsComponent } from './components/friends/friends.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
-import { GrupoComponent } from './components/grupo/grupo.component';
+import { ExpensesComponent } from './components/expenses/expenses.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +19,7 @@ import { GrupoComponent } from './components/grupo/grupo.component';
     NavBarComponent,
     RegistarComponent,
     FriendsComponent,
-    HomePageComponent,
-    GrupoComponent,
+    ExpensesComponent,
   ],
   imports: [
     BrowserModule,

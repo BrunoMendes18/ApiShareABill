@@ -21,7 +21,7 @@
     <div class='clearfix'>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -60,13 +60,16 @@
 35
 36
 37
-38
-39
-40</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+38</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -89,64 +92,55 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
-const res = require('express/lib/response');
 &nbsp;
 module.exports = (app) =&gt; {
-    const router = express.Router();
+  const router = express.Router();
 &nbsp;
-    router.get('/', (req, res, next) =&gt; {
-        if(!req.body.name){
-            app.services.friend.findAll(req.body.id)
-            .then((result) =&gt; res.status(200).json(result))
-            .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-        } else {
-            app.services.friend.findByName(req.body)
-            .then((result) =&gt; res.status(200).json(result))
-            .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-        }
-    });
+  router.get('/:id', (req, res, next) =&gt; {
+    app.services.friend.findAll(req.params.id)
+      .then((result) =&gt; res.status(200).json(result))
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    router.get('/:id', (req, res, next) =&gt; {
-        app.services.friend.findOne(req.body.id, req.params.id)
+  router.get('/:t/:id/:outro', (req, res, next) =&gt; {
+    if (req.params.t == 1) {
+      app.services.friend.findOne(req.params.id, req.params.outro)
         .then((result) =&gt; res.status(200).json(result))
         .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    })
-&nbsp;
-    router.post('/', (req, res, next) =&gt; {
-        const amigos = { ...req.body }
-        app.services.friend.save(amigos)
-        .then((result) =&gt; res.status(201).json(result[0]))
+    } else {
+      app.services.friend.findByName(req.params.id, req.params.outro)
+        .then((result) =&gt; res.status(200).json(result))
         .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
+    }
+  });
 &nbsp;
-    router.delete('/:id', (req, res, next) =&gt; {
-        app.services.friend.remover(req.body.id, req.params.id)
-        .then(() =&gt; res.status(204).send())
-        .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    })
+  router.post('/', (req, res, next) =&gt; {
+    app.services.friend.save(req.body)
+      .then((result) =&gt; res.status(201).json(result[0]))
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    return router
+  router.delete('/:id', (req, res, next) =&gt; {
+    app.services.friend.remover(req.body.id, req.params.id)
+      .then(() =&gt; res.status(204).send())
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-}; </pre></td></tr>
+  return router;
+};
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jan 19 2022 19:22:12 GMT+0000 (Hora padrão da Europa Ocidental)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jan 22 2022 23:22:43 GMT+0000 (Hora padrão da Europa Ocidental)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

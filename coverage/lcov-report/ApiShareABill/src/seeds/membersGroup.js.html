@@ -55,77 +55,125 @@
 30
 31
 32
-33</td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">exports.seed = (knex) =&gt; {
   return knex('membrosGrupo').del()
-  .then(() =&gt; knex('amigos').del())
+    .then(() =&gt; knex('amigos').del())
     .then(() =&gt; knex('grupo').del())
     .then(() =&gt; knex('membrosDespesa'))
     .then(() =&gt; knex('despesa').del())
     .then(() =&gt; knex('users').del())
     .then(() =&gt; knex('users').insert([
-      { id: 10000, name: 'User IPCA #1', email: 'user1@ipca.pt', password: '56789'},
-      { id: 10001, name: 'User IPCA #2', email: 'user2@ipca.pt', password: '56789'},
+      {
+        id: 10000, name: 'User IPCA #1', email: 'user1@ipca.pt', password: '56789',
+      },
+      {
+        id: 10001, name: 'User IPCA #2', email: 'user2@ipca.pt', password: '56789',
+      },
+      {
+        id: 10003, name: 'Vitor Silva', email: 'vitor@gmail.com', password: '12345',
+      },
     ]))
     .then(() =&gt; knex('grupo').insert([
-      { id: 10000, nome: 'Grupo1', desc: 'descricao' , data: new Date(), admin: 10000 },
-      { id: 10001, nome: 'Grupo2', desc: 'descricao' , data: new Date(), admin: 10001 },
+      {
+        id: 10000, nome: 'Grupo1', desc: 'descricao', data: new Date(), admin: 10000,
+      },
+      {
+        id: 10001, nome: 'Grupo2', desc: 'descricao', data: new Date(), admin: 10001,
+      },
     ]))
     .then(() =&gt; knex('membrosGrupo').insert([
-      { user_id:10000, grupo_id:10000 },
-      { user_id:10001, grupo_id:10000 },
-      { user_id:10000, grupo_id:10001 },
-      { user_id:10001, grupo_id:10001 },
+      { user_id: 10000, grupo_id: 10000 },
+      { user_id: 10001, grupo_id: 10000 },
+      { user_id: 10000, grupo_id: 10001 },
+      { user_id: 10001, grupo_id: 10001 },
     ]))
     .then(() =&gt; knex('amigos').insert([
       { user_id1: 10000, user_id2: 10001 },
     ]))
     .then(() =&gt; knex('despesa').insert([
-      { id:10000, nome: 'Despesa1', quanti: 50, tipo: 1, pago: 10000 },
-      { id:10001, nome: 'Despesa2', quanti: 100, tipo: 1, grupo_id: 10001, pago: 10001 },
+      {
+        id: 10000, nome: 'Despesa1', quanti: 50, tipo: 1, pago: 10000,
+      },
+      {
+        id: 10001, nome: 'Despesa2', quanti: 100, tipo: 1, grupo_id: 10001, pago: 10001,
+      },
     ]))
     .then(() =&gt; knex('membrosDespesa').insert([
       { user_id: 10001, deve: 25, desp_id: 10000 },
       { user_id: 10000, deve: 50, desp_id: 10001 },
-    ]))
-};</pre></td></tr>
+    ]));
+};
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jan 19 2022 19:22:12 GMT+0000 (Hora padrão da Europa Ocidental)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jan 22 2022 23:22:43 GMT+0000 (Hora padrão da Europa Ocidental)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

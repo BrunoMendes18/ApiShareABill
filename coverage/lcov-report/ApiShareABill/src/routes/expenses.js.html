@@ -67,9 +67,7 @@
 42
 43
 44
-45
-46
-47</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+45</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -89,7 +87,6 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -110,7 +107,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -118,56 +114,54 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
 &nbsp;
 module.exports = (app) =&gt; {
-    const router = express.Router();
+  const router = express.Router();
 &nbsp;
-    const validate = (req,res,next) =&gt; {
-        app.services.expense.validate({...req.body})
-        .then(()=&gt;next())
-        .catch((err) =&gt; next(err));
-    };
+  const validate = (req, res, next) =&gt; {
+    app.services.expense.validate({ ...req.body })
+      .then(() =&gt; next())
+      .catch((err) =&gt; next(err));
+  };
 &nbsp;
-    router.get('/', (req, res, next) =&gt; {
-        app.services.expense.findAll()
-        .then((result) =&gt; res.status(200).json(result))
-        .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
+  router.get('/', (req, res, next) =&gt; {
+    app.services.expense.findAll()
+      .then((result) =&gt; res.status(200).json(result))
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    router.get('/:id',(req,res,next) =&gt; {
-        app.services.expense.find({id: req.params.id})
-        .then((result) =&gt;{ 
-            //if(result.pago !== req.user.id) return res.status(403).json({error: 'Não tem acesso ao recurso solicitado'});
-           return res.status(200).json(result);
-        }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr)=&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
+  router.get('/:id', (req, res, next) =&gt; {
+    app.services.expense.find({ id: req.params.id })
+      .then((result) =&gt; {
+        return res.status(200).json(result);
+      }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    router.post('/',validate, (req, res, next) =&gt; {
-        app.services.expense.save(req.body)
-        .then((result) =&gt; res.status(201).json(result[0]))
-        .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
+  router.post('/', validate, (req, res, next) =&gt; {
+    app.services.expense.save(req.body)
+      .then((result) =&gt; res.status(201).json(result[0]))
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    router.put('/:id',(req,res,next) =&gt;{
-        app.services.expense.update(req.params.id, req.body)
-            .then((result)=&gt; res.status(200).json(result[0]))
-            .catch(<span class="fstat-no" title="function not covered" >(e</span>rr)=&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
+  router.put('/:id', (req, res, next) =&gt; {
+    app.services.expense.update(req.params.id, req.body)
+      .then((result) =&gt; res.status(200).json(result[0]))
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    router.delete('/:id',(req,res,next) =&gt; {
-        app.services.expense.remove(req.params.id)
-        .then(()=&gt; res.status(204).send())
-        .catch(<span class="fstat-no" title="function not covered" >(e</span>rr)=&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
-    });
-    
+  router.delete('/:id', (req, res, next) =&gt; {
+    app.services.expense.remove(req.params.id)
+      .then(() =&gt; res.status(204).send())
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >next(err))</span>;
+  });
 &nbsp;
-    return router;
-&nbsp;
-};</pre></td></tr>
+  return router;
+};
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jan 19 2022 19:22:12 GMT+0000 (Hora padrão da Europa Ocidental)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jan 22 2022 23:22:43 GMT+0000 (Hora padrão da Europa Ocidental)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

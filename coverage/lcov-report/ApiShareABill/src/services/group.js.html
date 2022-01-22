@@ -113,13 +113,15 @@
 88</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -161,7 +163,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -176,20 +177,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -197,100 +194,103 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const validationError = require("../errors/validationError");
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const validationError = require('../errors/validationError');
 &nbsp;
 module.exports = (app) =&gt; {
-    
-    const findAll = () =&gt; {
-        return app.db('grupo').select('*');
-    };
+  const findAll = <span class="fstat-no" title="function not covered" >as</span>ync (id) =&gt; {
+    const grupos = <span class="cstat-no" title="statement not covered" >await app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });</span>
 &nbsp;
-    const findOne = async (id) =&gt; {
-        return await app.db('grupo').where({id: id});
+<span class="cstat-no" title="statement not covered" >    if (!grupos) <span class="cstat-no" title="statement not covered" >throw new validationError('Não pertence a grupos');</span></span>
+    else <span class="cstat-no" title="statement not covered" >return grupos;</span>
+  };
+&nbsp;
+  const findOne = async (ID) =&gt; {
+    return await app.db('grupo').where({ id: ID });
+  };
+&nbsp;
+  const validate = async (grupo) =&gt; {
+    if (!grupo.nome) throw new validationError('O NOME é um atributo obrigatório!');
+    if (!grupo.data) throw new validationError('A DATA é um atributo obrigatório!');
+    if (!grupo.admin) throw new validationError('ADMIN é um atributo obrigatório!');
+  };
+&nbsp;
+  const save = (grupo) =&gt; {
+    return app.db('grupo').insert(grupo);
+  };
+&nbsp;
+  const atualizar = (id, dados) =&gt; {
+    const resultado = app.db('grupo').where({ id }).update(dados, '*');
+    return resultado;
+  };
+&nbsp;
+  const pesquisar = async (id, nome) =&gt; {
+    const pesq = await app.db('grupo').where('nome', 'like', `%${nome}%`).orderBy('nome', 'asc');
+    const resultado = [];
+    let j = 0;
+&nbsp;
+    for (i = 0; pesq.length &gt; i; i++) {
+      const pertence = await app.db('membrosGrupo').where({ user_id: id, grupo_id: pesq[i].id });
+&nbsp;
+      if (pertence.length &gt; 0) {
+        resultado[j] = pesq[i];
+        j++;
+      }
     }
 &nbsp;
-    const validate = async (grupo) =&gt; {
-        if (!grupo.nome) throw new validationError ('O NOME é um atributo obrigatório!');
-        if (!grupo.data) throw new validationError ('A DATA é um atributo obrigatório!');
-        if (!grupo.admin) throw new validationError ('ADMIN é um atributo obrigatório!');
-    };
+    return resultado;
+  };
 &nbsp;
-    const save = (grupo) =&gt; {
-        return app.db('grupo').insert(grupo);
-    };
+  const deleteGroup = async (idGrupo, idUti) =&gt; {
+    const resultado = [];
+    let j = 0;
 &nbsp;
-    const atualizar = (id, dados) =&gt; {
-        const resultado = app.db('grupo').where({id: id}).update(dados, '*')
-        return resultado;
-    }
+    const admin = await app.db('grupo').where({ id: idGrupo });
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (admin[0].admin === idUti.idUser) {
+      const despesa = await app.db('despesa').where({ grupo_id: idGrupo });
 &nbsp;
-    const pesquisar = async (dados) =&gt; {
-        const pesq = await app.db('grupo').where('nome', 'like', `%${dados.nome}%`).orderBy('nome', 'asc');
-        let resultado = [];
-        let j = 0;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (despesa.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >        for (i = 0; i &lt; despesa.length; i++) {</span>
+          const liquidado = <span class="cstat-no" title="statement not covered" >await app.db('membrosDespesa').where({ desp_id: despesa[i].id });</span>
 &nbsp;
-        for(i = 0; pesq.length &gt; i; i++) {
-            const pertence = await app.db('membrosGrupo').where({user_id: dados.id, grupo_id: pesq[i].id})
-&nbsp;
-            if(pertence.length &gt; 0) {
-                resultado[j] = pesq[i];
-                j++;
-            }
+<span class="cstat-no" title="statement not covered" >          if (liquidado.deve &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            resultado[j] = liquidado[i];</span>
+<span class="cstat-no" title="statement not covered" >            j++;</span>
+          }
         }
 &nbsp;
-        return resultado;
-    }
-&nbsp;
-    const deleteGroup = async (idGrupo, idUti) =&gt; {
-        let resultado = [];
-        let j = 0;
-&nbsp;
-        const admin = await app.db('grupo').where({ id: idGrupo})
-        console.log(admin ,'^^^^^^', admin[0].admin, '~~~~~~~', idUti.idUser,'+++++++++++ ', admin.admin == idUti.idUser, ' ----------------')
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (admin[0].admin == idUti.idUser){
-            const despesa = await app.db('despesa').where({ grupo_id: idGrupo })
-&nbsp;
-            <span class="missing-if-branch" title="if path not taken" >I</span>if (despesa.length &gt; 0) {
-<span class="cstat-no" title="statement not covered" >                for (i = 0; i &lt; despesa.length; i++) {</span>
-                    const liquidado = <span class="cstat-no" title="statement not covered" >await app.db('membrosDespesa').where({ desp_id: despesa[i].id })</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >                    if (liquidado.deve &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >                        resultado[j] = liquidado[i];</span>
-<span class="cstat-no" title="statement not covered" >                        j++;</span>
-                    }
-                }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >                if (resultado.length &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >                    throw new validationError ('Ainda há contas por pagar!')</span>
-                }
-                else {
-<span class="cstat-no" title="statement not covered" >                    for (i = 0; i &lt; despesa.length; index++) {</span>
-<span class="cstat-no" title="statement not covered" >                        await app.db('membrosDespesa').where({ desp_id : despesa[i].id }).del()</span>
-                    };
-<span class="cstat-no" title="statement not covered" >                    await app.db('despesa').where({ grupo_id : idGrupo }).del();</span>
-<span class="cstat-no" title="statement not covered" >                    await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del();</span>
-<span class="cstat-no" title="statement not covered" >                    return await app.db('grupo').where({ id: idGrupo }).del();</span>
-                }
-                
-            }
-            else {
-                await app.db('membrosGrupo').where({ grupo_id : idGrupo }).del()
-                return await app.db('grupo').where({ id: idGrupo }).del()
-            }
+<span class="cstat-no" title="statement not covered" >        if (resultado.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >          throw new validationError('Ainda há contas por pagar!');</span>
+        } else {
+<span class="cstat-no" title="statement not covered" >          for (i = 0; i &lt; despesa.length; index++) {</span>
+<span class="cstat-no" title="statement not covered" >            await app.db('membrosDespesa').where({ desp_id: despesa[i].id }).del();</span>
+          }
+<span class="cstat-no" title="statement not covered" >          await app.db('despesa').where({ grupo_id: idGrupo }).del();</span>
+<span class="cstat-no" title="statement not covered" >          await app.db('membrosGrupo').where({ grupo_id: idGrupo }).del();</span>
+<span class="cstat-no" title="statement not covered" >          return await app.db('grupo').where({ id: idGrupo }).del();</span>
         }
-        else {
-<span class="cstat-no" title="statement not covered" >            throw new validationError ('Você não é o administrador do grupo!')</span>
-        }
+      } else {
+        await app.db('membrosGrupo').where({ grupo_id: idGrupo }).del();
+        return await app.db('grupo').where({ id: idGrupo }).del();
+      }
+    } else {
+<span class="cstat-no" title="statement not covered" >      throw new validationError('Você não é o administrador do grupo!');</span>
     }
+  };
 &nbsp;
-    return { findAll, validate, save, findOne, atualizar, pesquisar, deleteGroup };
-}</pre></td></tr>
+  return {
+    findAll, validate, save, findOne, atualizar, pesquisar, deleteGroup,
+  };
+};
+&nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jan 19 2022 19:22:12 GMT+0000 (Hora padrão da Europa Ocidental)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jan 22 2022 23:22:43 GMT+0000 (Hora padrão da Europa Ocidental)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

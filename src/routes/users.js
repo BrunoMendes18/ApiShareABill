@@ -9,6 +9,12 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
+  router.get('/:nome', (req, res, next) => {
+    app.services.user.pesquisar(req.params.nome)
+      .then((result) => res.status(200).json(result))
+      .catch((err) => next(err));
+  });
+
   const validate = (req, res, next) => {
     app.services.user.validate({ ...req.body })
       .then(() => next())

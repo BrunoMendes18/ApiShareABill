@@ -3,21 +3,21 @@ const express = require('express');
 module.exports = (app) => {
   const router = express.Router();
 
-  router.get('/', (req, res, next) => {
-    if (!req.body.nome) {
-      app.services.group.findAll(req.body)
+  router.get('/:t/:id', (req, res, next) => {
+    if (req.params.t === 1) {
+      app.services.group.findAll(req.params.id)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));
     } else {
-      app.services.group.pesquisar(req.body)
+      app.services.group.findOne(req.params.id)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));
     }
   });
 
-  router.get('/:id', (req, res, next) => {
-    app.services.group.findOne(req.params.id)
-      .then((result) => res.status(200).json(result[0]))
+  router.get('/:t/:id/:nome', (req, res, next) => {
+    app.services.group.pesquisar(req.params.id, req.params.nome)
+      .then((result) => res.status(200).json(result))
       .catch((err) => next(err));
   });
 
@@ -31,6 +31,18 @@ module.exports = (app) => {
     const info = { ...req.body };
     app.services.group.save(info)
       .then((result) => res.status(201).json(result[0]))
+      .catch((err) => next(err));
+  });
+
+  router.delete('/:id', (req, res, next) => {
+    app.services.group.deleteGroup(req.params.id, req.body)
+      .then(() => res.status(204).send())
+      .catch((err) => next(err));
+  });
+
+  router.put('/:id', (req, res, next) => {
+    app.services.group.atualizar(req.params.id, req.body)
+      .then((result) => res.status(200).json(result[0]))
       .catch((err) => next(err));
   });
 

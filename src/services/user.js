@@ -10,6 +10,10 @@ module.exports = (app) => {
     return app.db('users').where(filter).first();
   };
 
+  const pesquisar = (nome) => {
+    return app.db('users').where('name', 'like', `%${nome}%`);
+  };
+
   const getPasswdHash = (passwd) => {
     const salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(passwd, salt);
@@ -31,6 +35,6 @@ module.exports = (app) => {
   };
 
   return {
-    findAll, validate, save, findOne,
+    findAll, validate, save, findOne, pesquisar,
   };
 };

@@ -1,25 +1,27 @@
+const validationError = require('../errors/validationError');
+
 module.exports = (app) => {
   const findAll = (filter) => {
     return app.db('amigos').where({ user_id1: filter, user_id2: filter });
   };
 
-  const findOne = async (id, idAmigo) => {
-    const priTent = await app.db('amigos').where({ user_id1: id, user_id2: idAmigo });
-    const segTent = await app.db('amigos').where({ user_id1: idAmigo, user_id2: id });
+  const findOne = async (iD, idAmigo) => {
+    const priTent = await app.db('amigos').where({ user_id1: iD, user_id2: idAmigo });
+    const segTent = await app.db('amigos').where({ user_id1: idAmigo, user_id2: iD });
 
-    if (!priTent && !segTent) return { error: 'voces não são amigos' };
+    if (!priTent && !segTent)throw new validationError('voces não são amigos');
     return await app.db('users').where({ id: idAmigo });
   };
 
-  const findByName = async (nome) => {
-    const pesq = await app.db('users').where('name', 'like', `%${nome.name}%`).orderBy('name', 'asc');
+  const findByName = async (iD, nome) => {
+    const pesq = await app.db('users').where('name', 'like', `%${nome}%`).orderBy('name', 'asc');
     const resultado = [];
     let j = 0;
 
     for (i = 0; i < pesq.length; i++) {
       const amigos = await app.db('amigos')
-        .where({ user_id1: nome.id, user_id2: pesq[i].id })
-        .orWhere({ user_id1: pesq[i].id, user_id2: nome.id });
+        .where({ user_id1: iD, user_id2: pesq[i].id })
+        .orWhere({ user_id1: pesq[i].id, user_id2: iD });
 
       if (amigos.length > 0) {
         resultado[j] = pesq[i];

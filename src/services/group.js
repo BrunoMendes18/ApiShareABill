@@ -2,20 +2,14 @@ const validationError = require('../errors/validationError');
 
 module.exports = (app) => {
   const findAll = async (id) => {
-    const grupos = await app.db('membrosGrupo').where({ user_id: id.user_id }).select();
-    const resultado = [];
+    const grupos = await app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });
 
-    if (grupos.length < 0) throw new validationError('Não pretence a nenhum grupo');
-
-    for (i = 0; i < grupos.length; i++) {
-      resultado[i] = app.db('grupo').where({ id: grupos[i].grupo_id });
-    }
-
-    return resultado;
+    if (!grupos) throw new validationError('Não pertence a grupos');
+    else return grupos;
   };
 
-  const findOne = async (id) => {
-    return await app.db('grupo').where({ id });
+  const findOne = async (ID) => {
+    return await app.db('grupo').where({ id: ID });
   };
 
   const validate = async (grupo) => {
@@ -33,13 +27,13 @@ module.exports = (app) => {
     return resultado;
   };
 
-  const pesquisar = async (dados) => {
-    const pesq = await app.db('grupo').where('nome', 'like', `%${dados.nome}%`).orderBy('nome', 'asc');
+  const pesquisar = async (id, nome) => {
+    const pesq = await app.db('grupo').where('nome', 'like', `%${nome}%`).orderBy('nome', 'asc');
     const resultado = [];
     let j = 0;
 
     for (i = 0; pesq.length > i; i++) {
-      const pertence = await app.db('membrosGrupo').where({ user_id: dados.id, grupo_id: pesq[i].id });
+      const pertence = await app.db('membrosGrupo').where({ user_id: id, grupo_id: pesq[i].id });
 
       if (pertence.length > 0) {
         resultado[j] = pesq[i];

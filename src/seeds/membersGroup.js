@@ -12,6 +12,9 @@ exports.seed = (knex) => {
       {
         id: 10001, name: 'User IPCA #2', email: 'user2@ipca.pt', password: '56789',
       },
+      {
+        id: 10003, name: 'Vitor Silva', email: 'vitor@gmail.com', password: '12345',
+      },
     ]))
     .then(() => knex('grupo').insert([
       {

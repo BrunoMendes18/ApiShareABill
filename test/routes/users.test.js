@@ -5,14 +5,15 @@ const app = require('../../src/app');
 
 const MAIN_ROUTE = '/v1/users';
 
-const mail = `${Date.now()}@gmail.com`;
 const secret = 'ipca!DWM@202122';
-let user;
+const user = {
+  id: 10000, name: 'User IPCA #1', email: 'user1@ipca.pt', password: '56789',
+};
+user.token = jwt.encode(user, secret);
+const mail = `${Date.now()}@gmail.com`;
 
 beforeAll(async () => {
-  const res = await app.services.user.save({ name: 'Bruno Mendes', email: mail, password: '12345' });
-  user = { ...res[0] };
-  user.token = jwt.encode(user, secret);
+  return app.db.seed.run();
 });
 
 test('Test #1 - Listar os utilizadores', () => {
@@ -38,7 +39,7 @@ test('Test #2 - Inserir utilizadores', () => {
 test('Test #2.1 - Guardar a palavra-passe encriptada', async () => {
   const res = await request(app).post(MAIN_ROUTE)
     .set('authorization', `bearer ${user.token}`)
-    .send({ name: 'Bruno Mendes', email: `${Date.now()}@gmail.com`, password: '12345' });
+    .send({ name: 'Bruno Mendes', email: mail, password: '12345' });
   expect(res.status).toBe(201);
 
   const { id } = res.body;
@@ -64,4 +65,12 @@ describe('Test #3 - Registo inválido ...', () => {
   test('Test #3.2 - Inserir utilizador sem email', () => testTemplate({ email: null }, 'O EMAIL é um atributo obrigatório!'));
   test('Test #3.3 - Inserir email duplo', () => testTemplate({ email: mail }, 'EMAIL já registado!'));
   test('Test #3.4 - Inserir sem password', () => testTemplate({ password: null }, 'A PASSWORD é um atributo obrigatório!'));
+});
+
+test('Test #4 - Pesquisar Utilizadores', () => {
+  return request(app).get(`${MAIN_ROUTE}/User IPCA #2`)
+    .set('authorization', `bearer ${user.token}`)
+    .then((res) => {
+      expect(res.status).toBe(200);
+    });
 });

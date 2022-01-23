@@ -1,8 +1,8 @@
 const validationError = require('../errors/validationError');
 
 module.exports = (app) => {
-  const findAll = async (id) => {
-    const grupos = await app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });
+  const findAll = (id) => {
+    const grupos = app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });
 
     if (!grupos) throw new validationError('Não pertence a grupos');
     else return grupos;

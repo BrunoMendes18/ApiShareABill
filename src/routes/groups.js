@@ -4,11 +4,11 @@ module.exports = (app) => {
   const router = express.Router();
 
   router.get('/:t/:id', (req, res, next) => {
-    if (req.params.t === 1) {
+    if (req.params.t == 1) {
       app.services.group.findAll(req.params.id)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));
-    } else {
+    } else if (req.params.t == 2) {
       app.services.group.findOne(req.params.id)
         .then((result) => res.status(200).json(result))
         .catch((err) => next(err));

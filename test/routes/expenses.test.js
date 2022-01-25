@@ -83,7 +83,7 @@ test('Test #4 - Ver despesa por id', () => {
     .insert({
       nome: 'Ver despesa por id', quanti: 79, tipo: 1, grupo_id: grupo.id, pago: userA.id,
     }, ['id'])
-    .then((expense) => request(app).get(`${MAIN_ROUTE}/${expense[0].id}`)
+    .then((expense) => request(app).get(`${MAIN_ROUTE}/1/${expense[0].id}`)
       .set('authorization', `bearer ${userA.token}`))
     .then((res) => {
       expect(res.status).toBe(200);
@@ -92,16 +92,13 @@ test('Test #4 - Ver despesa por id', () => {
     });
 });
 
-/* test('Test #5 - Ver despesas de um grupo', () => {
-    let grupoID = 1;
-    return request(app).get(`${MAIN_ROUTE}/${grupoID}`,['grupo_id'])
-    .set('authorization',`bearer ${userA.token}`)
-    .then((res)=>{
-        console.log(res.body);
-        expect(res.status).toBe(200);
-        expect(res.body[0].grupo_id).toBe('1');
+test('Test #5 - Ver despesas de um grupo', () => {
+  return request(app).get(`${MAIN_ROUTE}/2/${grupo.id}`)
+    .set('authorization', `bearer ${userA.token}`)
+    .then((res) => {
+      expect(res.status).toBe(200);
     });
-}); */
+});
 
 test('Test #6 - Eleminar despesa', () => {
   return app.db('despesa')

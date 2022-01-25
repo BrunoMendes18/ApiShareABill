@@ -15,6 +15,10 @@ module.exports = (app) => {
     return app.db('despesa').where(filter).first();
   };
 
+  const grupo = (id) => {
+    return app.db('despesa').where({ grupo_id: id });
+  }
+
   const save = async (expense) => {
     return await app.db('despesa').insert(expense, ['nome', 'quanti', 'tipo', 'grupo_id', 'pago']);
   };
@@ -33,6 +37,6 @@ module.exports = (app) => {
   };
 
   return {
-    save, findAll, validate, update, find, remove,
+    save, findAll, validate, update, find, remove, grupo
   };
 };

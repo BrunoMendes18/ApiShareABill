@@ -40,6 +40,9 @@ exports.seed = (knex) => {
       {
         id: 10001, nome: 'Despesa2', quanti: 100, tipo: 1, grupo_id: 10001, pago: 10001,
       },
+      {
+        id: 10002, nome: 'Despesa3', quanti: 150, tipo: 1, grupo_id: 10001, pago: 10001,
+      },
     ]))
     .then(() => knex('membrosDespesa').insert([
       { user_id: 10001, deve: 25, desp_id: 10000 },

@@ -1,8 +1,8 @@
 const validationError = require('../errors/validationError');
 
 module.exports = (app) => {
-  const findAll = (filter) => {
-    return app.db('amigos').where({ user_id1: filter, user_id2: filter });
+  const findAll = async (filter) => {
+    return await app.db('amigos').where({ user_id1: filter }).orWhere({ user_id2: filter });
   };
 
   const findOne = async (iD, idAmigo) => {

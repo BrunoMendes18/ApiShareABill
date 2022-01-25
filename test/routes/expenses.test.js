@@ -23,7 +23,7 @@ beforeAll(async () => {
 });
 
 test('Test #1 - Listar despesas', () => {
-  return request(app).get(MAIN_ROUTE)
+  return request(app).get(`${MAIN_ROUTE}/3/${userA.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {
       expect(res.status).toBe(200);

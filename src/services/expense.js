@@ -7,8 +7,12 @@ module.exports = (app) => {
     if (!data.tipo) throw new validationError('A maneira como DISTRIBUI a despesa é um atributo obrigatório');
     if (!data.pago) throw new validationError('A PESSOA que PAGOU é um atributo obrigatório');
   };
-  const findAll = () => {
-    return app.db('despesa').select('*');
+
+  const findAll = (dados) => {
+    return app.db('despesa').join('membrosDespesa', 'id', '=', 'desp_id')
+      .where({ user_id: dados })
+      .orWhere({ pago: dados });
+    /* return app.db('despesa').select('*'); */
   };
 
   const find = (filter = {}) => {

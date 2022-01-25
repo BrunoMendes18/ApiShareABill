@@ -9,11 +9,11 @@ module.exports = (app) => {
       .catch((err) => next(err));
   };
 
-  router.get('/', (req, res, next) => {
+  /* router.get('/', (req, res, next) => {
     app.services.expense.findAll()
       .then((result) => res.status(200).json(result))
       .catch((err) => next(err));
-  });
+  }); */
 
   router.get('/:t/:id', (req, res, next) => {
     if (req.params.t == 1) {
@@ -21,12 +21,15 @@ module.exports = (app) => {
         .then((result) => {
           return res.status(200).json(result);
         }).catch((err) => next(err));
-    }
-    else {
+    } else if (req.params.t == 2) {
       app.services.expense.grupo(req.params.id)
         .then((result) => {
           return res.status(200).json(result);
         }).catch((err) => next(err));
+    } else {
+      app.services.expense.findAll(req.params.id)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err));
     }
   });
 

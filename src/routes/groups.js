@@ -34,8 +34,8 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
-  router.delete('/:id', (req, res, next) => {
-    app.services.group.deleteGroup(req.params.id, req.body)
+  router.delete('/:id/:user', (req, res, next) => {
+    app.services.group.deleteGroup(req.params.id, req.params.user)
       .then(() => res.status(204).send())
       .catch((err) => next(err));
   });

@@ -51,8 +51,8 @@ module.exports = (app) => {
     const resultado = [];
     let j = 0;
 
-    const admin = await app.db('grupo').where({ id: idGrupo });
-    if (admin[0].admin === idUti.idUser) {
+    const dadosGrupo = await app.db('grupo').where({ id: idGrupo });
+    if (dadosGrupo[0].admin == idUti) {
       const despesa = await app.db('despesa').where({ grupo_id: idGrupo });
 
       if (despesa.length > 0) {

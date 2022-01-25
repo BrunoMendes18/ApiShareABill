@@ -114,10 +114,11 @@ test('Test #9 - Atualizar grupo', () => {
 });
 
 test('Test #10 - Eliminar Grupo', () => {
-  return request(app).delete(`${MAIN_ROUTE}/${grupoA.id}`)
+  return app.db('grupo').insert({
+    id: 9999, nome: 'Brasil', desc: 'Rio de Janeiro', data: new Date(), admin: userA.id,
+  }).then(() => request(app).delete(`${MAIN_ROUTE}/9999/${userA.id}`)
     .set('authorization', `bearer ${userA.token}`)
-    .send({ idUser: 10001 })
     .then((res) => {
       expect(res.status).toBe(204);
-    });
+    }));
 });

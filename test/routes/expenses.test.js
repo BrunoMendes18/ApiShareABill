@@ -93,7 +93,7 @@ test('Test #4 - Ver despesa por id', () => {
 });
 
 test('Test #5 - Ver despesas de um grupo', () => {
-  return request(app).get(`${MAIN_ROUTE}/2/${grupo.id}`)
+  return request(app).get(`${MAIN_ROUTE}/2/-1`)
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {
       expect(res.status).toBe(200);

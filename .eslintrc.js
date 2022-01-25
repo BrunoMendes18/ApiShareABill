@@ -19,6 +19,8 @@ module.exports = {
     'no-plusplus': 0,
     'no-undef': 0,
     'no-await-in-loop': 0,
+    'no-else-return': 0,
+    eqeqeq: 0,
     camelcase: 0,
   },
 };

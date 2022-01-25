@@ -27,9 +27,9 @@ module.exports = (app) => {
       .catch((err) => next(err));
   };
 
-  router.post('/', validate, (req, res, next) => {
+  router.post('/:id', validate, (req, res, next) => {
     const info = { ...req.body };
-    app.services.group.save(info)
+    app.services.group.save(info, req.params.id)
       .then((result) => res.status(201).json(result[0]))
       .catch((err) => next(err));
   });

@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const validationError = require('../errors/validationError');
 
 module.exports = (app) => {
@@ -18,8 +19,10 @@ module.exports = (app) => {
     if (!grupo.admin) throw new validationError('ADMIN é um atributo obrigatório!');
   };
 
-  const save = (grupo) => {
-    return app.db('grupo').insert(grupo);
+  const save = async (grupo, iD) => {
+    const Grupo = await app.db('grupo').insert(grupo, ['id']);
+    await app.db('membrosGrupo').insert({ user_id: iD, grupo_id: Grupo[0].id });
+    return Grupo;
   };
 
   const atualizar = (id, dados) => {

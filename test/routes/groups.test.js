@@ -19,10 +19,10 @@ beforeAll(() => {
 });
 
 test('Test #1 - Criar Grupo', () => {
-  return request(app).post(MAIN_ROUTE)
+  return request(app).post(`${MAIN_ROUTE}/${userA.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .send({
-      nome: 'Grupo1', desc: 'descricao', data: new Date(), admin: userA.id,
+      nome: 'Grupo dos fixes', desc: 'descricao', data: new Date(), admin: userA.id,
     })
     .then((res) => {
       expect(res.status).toBe(201);
@@ -31,7 +31,7 @@ test('Test #1 - Criar Grupo', () => {
 
 describe('Test #2 - Criação inválida ...', () => {
   const testTemplate = (newData, errorMessage) => {
-    return request(app).post(MAIN_ROUTE)
+    return request(app).post(`${MAIN_ROUTE}/${userA.id}`)
       .set('authorization', `bearer ${userA.token}`)
       .send({
         nome: 'Grupo 2', desc: 'descricao', data: new Date(), admin: userA.id, ...newData,
@@ -98,7 +98,7 @@ test('Test #8 - Pesquisar grupo', () => {
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {
       expect(res.status).toBe(200);
-      expect(res.body[0].nome).toBe('Grupo2');
+      expect(res.body[0].nome).toBe('Grupo dos fixes');
     });
 });
 

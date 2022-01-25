@@ -24,22 +24,6 @@ module.exports = (app) => {
       }).catch((err) => next(err));
   });
 
-  router.post('/signin', (req, res, next) => {
-    app.services.user.findOne({ email: req.body.email })
-      .then((user) => {
-        if (!user) throw new validationError('Autenticação inválida! #2');
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          const payload = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-          };
-          const token = jwt.encode(payload, secret);
-          res.status(200).json({ token });
-        } else throw new validationError('Autenticação inválida!');
-      }).catch((err) => next(err));
-  });
-
   router.post('/signup', async (req, res, next) => {
     try {
       const result = await app.services.user.save(req.body);

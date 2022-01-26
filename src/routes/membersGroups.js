@@ -9,8 +9,8 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
-  router.delete('/', (req, res, next) => {
-    app.services.memberGroup.RemoveToGroup(req.body)
+  router.delete('/:grupo/:user', (req, res, next) => {
+    app.services.memberGroup.RemoveToGroup(req.params.grupo, req.params.user)
       .then(() => res.status(204).send())
       .catch((err) => next(err));
   });

@@ -76,9 +76,8 @@ test('Test #5 - Adicionar Membro Ao grupo', () => {
 test('Test #6 - Remover Membro Ao grupo', () => {
   return app.db('membrosGrupo').insert(
     { user_id: userA.id, grupo_id: grupoA.id }, ['user_id'],
-  ).then((mem) => request(app).delete(SEC_ROUTE)
+  ).then((mem) => request(app).delete(`${SEC_ROUTE}/${grupoA.id}/${mem[0].user_id}`)
     .set('authorization', `bearer ${userA.token}`)
-    .send({ grupo_id: grupoA.id, user_id: mem[0].user_id })
     .then((res) => {
       expect(res.status).toBe(204);
     }));

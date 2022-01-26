@@ -83,6 +83,17 @@ test('Test #6 - Remover Membro Ao grupo', () => {
     }));
 });
 
+test('Test #7 - Ver membros grupo', () => {
+  return request(app).get(`${SEC_ROUTE}/${grupoA.id}`)
+    .set('authorization', `bearer ${userA.token}`)
+    .then((res) => {
+      console.log('======================')
+      console.log(res.body)
+      console.log('======================')
+      expect(res.status).toBe(200);
+    });
+});
+
 /* test('Test #7 - Filtrar por todos os grupos', () => {
   return request(app).get(`${MAIN_ROUTE}/2/${grupoA.id}`)
     .set('authorization', `bearer ${userA.token}`)

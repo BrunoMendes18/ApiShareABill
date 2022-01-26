@@ -44,6 +44,9 @@ test('Test #3 - Ver Amigo', () => {
   return request(app).get(`${MAIN_ROUTE}/1/${userA.id}/${userB.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {
+      console.log('======================')
+      console.log(res.body)
+      console.log('======================')
       expect(res.status).toBe(200);
       expect(res.body[0].name).toBe('User IPCA #2');
     });

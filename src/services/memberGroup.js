@@ -1,6 +1,8 @@
-const validationError = require('../errors/validationError');
-
 module.exports = (app) => {
+  const verMembros = (iD) => {
+    return app.db('membrosGrupo').where({ grupo_id: iD });
+  };
+
   const addToGroup = async (dados) => {
     return await app.db('membrosGrupo').insert({ user_id: dados.user_id, grupo_id: dados.grupo_id });
   };
@@ -27,5 +29,5 @@ module.exports = (app) => {
     }
   };
 
-  return { addToGroup, RemoveToGroup };
+  return { addToGroup, RemoveToGroup, verMembros };
 };

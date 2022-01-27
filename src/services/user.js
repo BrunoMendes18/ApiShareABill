@@ -34,7 +34,12 @@ module.exports = (app) => {
     return await app.db('users').insert(newUser, ['id', 'email', 'name']);
   };
 
+  const findInfo = (userid) => {
+    console.log(userid);
+    return app.db('users').where({ id: userid });
+  };
+
   return {
-    findAll, validate, save, findOne, pesquisar,
+    findAll, validate, save, findOne, pesquisar, findInfo,
   };
 };

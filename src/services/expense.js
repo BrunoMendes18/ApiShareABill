@@ -28,7 +28,7 @@ module.exports = (app) => {
   };
 
   const save = async (expense) => {
-    return await app.db('despesa').insert(expense, ['nome', 'quanti', 'tipo', 'grupo_id', 'pago']);
+    return await app.db('despesa').insert(expense, ['id', 'nome', 'quanti', 'tipo', 'grupo_id', 'pago']);
   };
 
   const update = async (id, despesa) => {

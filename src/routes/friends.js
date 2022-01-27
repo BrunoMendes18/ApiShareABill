@@ -27,6 +27,14 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
+  router.post('/:t/:id/:outro', (req, res, next) => {
+    if (req.params.t == 1) {
+      app.services.friend.save({ user_id1: req.params.id, user_id2: req.params.outro })
+        .then((result) => res.status(200).json(result[0]))
+        .catch((err) => next(err));
+    }
+  });
+
   router.delete('/:id', (req, res, next) => {
     app.services.friend.remover(req.body.id, req.params.id)
       .then(() => res.status(204).send())

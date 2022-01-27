@@ -15,6 +15,14 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
+  router.get('/:t/:id', (req, res, next) => {
+    if (req.params.t == 1) {
+      app.services.user.findInfo(req.params.id)
+        .then((result) => res.status(200).json(result))
+        .catch((err) => next(err));
+    }
+  });
+
   const validate = (req, res, next) => {
     app.services.user.validate({ ...req.body })
       .then(() => next())

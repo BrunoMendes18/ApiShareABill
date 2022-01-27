@@ -110,18 +110,22 @@
 85
 86
 87
-88</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+88
+89
+90
+91</td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -132,6 +136,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -148,8 +154,8 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,14 +203,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const validationError = require('../errors/validationError');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { json } = require('body-parser');
+const validationError = require('../errors/validationError');
 &nbsp;
 module.exports = (app) =&gt; {
-  const findAll = <span class="fstat-no" title="function not covered" >as</span>ync (id) =&gt; {
-    const grupos = <span class="cstat-no" title="statement not covered" >await app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });</span>
+  const findAll = (id) =&gt; {
+    const grupos = app.db('grupo').join('membrosGrupo', 'id', '=', 'grupo_id').where({ user_id: id });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!grupos) <span class="cstat-no" title="statement not covered" >throw new validationError('Não pertence a grupos');</span></span>
-    else <span class="cstat-no" title="statement not covered" >return grupos;</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!grupos) <span class="cstat-no" title="statement not covered" >throw new validationError('Não pertence a grupos');</span>
+    else return grupos;
   };
 &nbsp;
   const findOne = async (ID) =&gt; {
@@ -217,8 +224,10 @@ module.exports = (app) =&gt; {
     if (!grupo.admin) throw new validationError('ADMIN é um atributo obrigatório!');
   };
 &nbsp;
-  const save = (grupo) =&gt; {
-    return app.db('grupo').insert(grupo);
+  const save = async (grupo, iD) =&gt; {
+    const Grupo = await app.db('grupo').insert(grupo, ['id']);
+    await app.db('membrosGrupo').insert({ user_id: iD, grupo_id: Grupo[0].id });
+    return Grupo;
   };
 &nbsp;
   const atualizar = (id, dados) =&gt; {
@@ -247,8 +256,8 @@ module.exports = (app) =&gt; {
     const resultado = [];
     let j = 0;
 &nbsp;
-    const admin = await app.db('grupo').where({ id: idGrupo });
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (admin[0].admin === idUti.idUser) {
+    const dadosGrupo = await app.db('grupo').where({ id: idGrupo });
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (dadosGrupo[0].admin == idUti) {
       const despesa = await app.db('despesa').where({ grupo_id: idGrupo });
 &nbsp;
       <span class="missing-if-branch" title="if path not taken" >I</span>if (despesa.length &gt; 0) {
@@ -264,7 +273,7 @@ module.exports = (app) =&gt; {
 <span class="cstat-no" title="statement not covered" >        if (resultado.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >          throw new validationError('Ainda há contas por pagar!');</span>
         } else {
-<span class="cstat-no" title="statement not covered" >          for (i = 0; i &lt; despesa.length; index++) {</span>
+<span class="cstat-no" title="statement not covered" >          for (i = 0; i &lt; despesa.length; i++) {</span>
 <span class="cstat-no" title="statement not covered" >            await app.db('membrosDespesa').where({ desp_id: despesa[i].id }).del();</span>
           }
 <span class="cstat-no" title="statement not covered" >          await app.db('despesa').where({ grupo_id: idGrupo }).del();</span>
@@ -290,7 +299,7 @@ module.exports = (app) =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jan 22 2022 23:22:43 GMT+0000 (Hora padrão da Europa Ocidental)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jan 27 2022 17:31:20 GMT+0000 (Hora padrão da Europa Ocidental)
 </div>
 </div>
 <script src="..\..\..\prettify.js"></script>

@@ -33,7 +33,7 @@ module.exports = (app) => {
   };
 
   const save = async (amigos) => {
-    return await app.db('amigos').insert(amigos, ['user_id1', 'user_id2']);
+    return await app.db('amigos').insert(amigos, '*');
   };
 
   const remover = async (id, idAmigo) => {

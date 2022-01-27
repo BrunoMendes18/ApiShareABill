@@ -68,7 +68,7 @@ module.exports = (app) => {
         if (resultado.length > 0) {
           throw new validationError('Ainda há contas por pagar!');
         } else {
-          for (i = 0; i < despesa.length; index++) {
+          for (i = 0; i < despesa.length; i++) {
             await app.db('membrosDespesa').where({ desp_id: despesa[i].id }).del();
           }
           await app.db('despesa').where({ grupo_id: idGrupo }).del();

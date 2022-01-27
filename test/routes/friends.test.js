@@ -44,9 +44,6 @@ test('Test #3 - Ver Amigo', () => {
   return request(app).get(`${MAIN_ROUTE}/1/${userA.id}/${userB.id}`)
     .set('authorization', `bearer ${userA.token}`)
     .then((res) => {
-      console.log('======================')
-      console.log(res.body)
-      console.log('======================')
       expect(res.status).toBe(200);
       expect(res.body[0].name).toBe('User IPCA #2');
     });
@@ -54,12 +51,11 @@ test('Test #3 - Ver Amigo', () => {
 
 test('Test #4 - Remover Amigo', () => {
   return app.db('amigos').insert({ user_id1: userC.id, user_id2: userA.id }, ['user_id2'])
-    .then((ami) => request(app).delete(`${MAIN_ROUTE}/${ami[0].user_id2}`)
+    .then((ami) => request(app).delete(`${MAIN_ROUTE}/${userA.id}/${ami[0].user_id2}`)
       .set('authorization', `bearer ${userA.token}`)
-      .send({ id: userA.id }))
-    .then((res) => {
-      expect(res.status).toBe(204);
-    });
+      .then((res) => {
+        expect(res.status).toBe(204);
+      }));
 });
 
 test('Test #5 - Pesquisar Amigo', () => {

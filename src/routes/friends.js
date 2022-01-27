@@ -27,8 +27,8 @@ module.exports = (app) => {
       .catch((err) => next(err));
   });
 
-  router.delete('/:id', (req, res, next) => {
-    app.services.friend.remover(req.body.id, req.params.id)
+  router.delete('/:idU/:idA', (req, res, next) => {
+    app.services.friend.remover(req.params.idU, req.params.idA)
       .then(() => res.status(204).send())
       .catch((err) => next(err));
   });

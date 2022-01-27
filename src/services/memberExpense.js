@@ -13,5 +13,11 @@ module.exports = (app) => {
       .del();
   };
 
-  return { save, remove, find };
+  const liquidar = (idUser, idDesp, dados) => {
+    return app.db('membrosDespesa').where({ user_id: idUser, desp_id: idDesp }).update(dados, '*');
+  };
+
+  return {
+    save, remove, find, liquidar,
+  };
 };

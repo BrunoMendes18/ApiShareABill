@@ -133,3 +133,13 @@ test('Test #8 - Ver membros da despesa', () => {
       expect(res.body[0].user_id).toBe(10001);
     });
 });
+
+test('Test #9 - Liquidar contas', () => {
+  return request(app).put(`${SEC_ROUTE}/10001/${despA.id}`)
+    .set('authorization', `bearer ${userA.token}`)
+    .send({ deve: 5 })
+    .then((res) => {
+      expect(res.status).toBe(200);
+      expect(res.body[0].user_id).toBe(10001);
+    });
+});
